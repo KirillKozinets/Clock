@@ -62,19 +62,39 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         hours.addOnScrollListener(recyclerViewScrollListenerHours);
         minutes.addOnScrollListener(recyclerViewScrollListenerMinutes);
 
-        hours.scrollToPosition(2408);
-        minutes.scrollToPosition(2400);
+        if (savedInstanceState != null) {
+            int hoursPosition =  savedInstanceState.getInt("hours");
+            int minutesPosition = savedInstanceState.getInt("minutes");
+            hours.scrollToPosition(hoursPosition);
+            minutes.scrollToPosition(minutesPosition);
+            hours.post(() -> toTargetPosition(hoursLayoutManager, hoursSnapHelper, hours, hoursPosition));
+            minutes.post(() -> toTargetPosition(minutesLayoutManager, minutesSnapHelper, minutes, minutesPosition));
+        } else {
+            hours.scrollToPosition(2408);
+            minutes.scrollToPosition(2400);
+            hours.post(() -> toTargetPosition(hoursLayoutManager, hoursSnapHelper, hours, 2408));
+            minutes.post(() -> toTargetPosition(minutesLayoutManager, minutesSnapHelper, minutes, 2400));
+        }
 
-        hours.post(() -> toTargetPosition(hoursLayoutManager, minutesSnapHelper, hours, 2408));
-        minutes.post(() -> toTargetPosition(minutesLayoutManager, hoursSnapHelper, minutes, 2400));
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("hours", hoursLayoutManager.getPosition(hoursLastTextView));
+        outState.putInt("minutes", minutesLayoutManager.getPosition(minutesLastTextView));
+        super.onSaveInstanceState(outState);
     }
 
     private void toTargetPosition(RecyclerView.LayoutManager LayoutManager, LinearSnapHelper snap, RecyclerView recyclerView, int position) {
         View view = LayoutManager.findViewByPosition(position);
-        int[] snapDistance = snap.calculateDistanceToFinalSnap(LayoutManager, view);
-        if (snapDistance[0] != 0 || snapDistance[1] != 0) {
-            recyclerView.scrollBy(snapDistance[0], snapDistance[1]);
+        if (view != null) {
+
+            int[] snapDistance = snap.calculateDistanceToFinalSnap(LayoutManager, view);
+
+            if (snapDistance[0] != 0 || snapDistance[1] != 0) {
+                recyclerView.scrollBy(snapDistance[0], snapDistance[1]);
+            }
+
         }
     }
 
@@ -106,12 +126,12 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.addAlarmClock)
-    public void addNewAlarmClock(){
+    public void addNewAlarmClock() {
 
     }
 
     @OnClick(R.id.cancel)
-    public void backToClockActivity(){
+    public void backToClockActivity() {
         onBackPressed();
     }
 }
