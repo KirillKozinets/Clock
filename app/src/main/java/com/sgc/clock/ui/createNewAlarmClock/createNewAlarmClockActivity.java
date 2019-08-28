@@ -62,19 +62,23 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         hours.addOnScrollListener(recyclerViewScrollListenerHours);
         minutes.addOnScrollListener(recyclerViewScrollListenerMinutes);
 
+        int hoursPosition = 2408;
+        int minutesPosition = 2400;
+
         if (savedInstanceState != null) {
-            int hoursPosition =  savedInstanceState.getInt("hours");
-            int minutesPosition = savedInstanceState.getInt("minutes");
-            hours.scrollToPosition(hoursPosition);
-            minutes.scrollToPosition(minutesPosition);
-            hours.post(() -> toTargetPosition(hoursLayoutManager, hoursSnapHelper, hours, hoursPosition));
-            minutes.post(() -> toTargetPosition(minutesLayoutManager, minutesSnapHelper, minutes, minutesPosition));
-        } else {
-            hours.scrollToPosition(2408);
-            minutes.scrollToPosition(2400);
-            hours.post(() -> toTargetPosition(hoursLayoutManager, hoursSnapHelper, hours, 2408));
-            minutes.post(() -> toTargetPosition(minutesLayoutManager, minutesSnapHelper, minutes, 2400));
+            hoursPosition = savedInstanceState.getInt("hours");
+            minutesPosition = savedInstanceState.getInt("minutes");
         }
+
+        hours.scrollToPosition(hoursPosition);
+        minutes.scrollToPosition(minutesPosition);
+
+        int finalHoursPosition = hoursPosition;
+        hours.post(() -> toTargetPosition(hoursLayoutManager, hoursSnapHelper, hours, finalHoursPosition));
+        
+        int finalMinutesPosition = minutesPosition;
+        minutes.post(() -> toTargetPosition(minutesLayoutManager, minutesSnapHelper, minutes, finalMinutesPosition));
+
 
     }
 
