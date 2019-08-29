@@ -21,6 +21,9 @@ public interface AlarmClockDao {
     @Query("SELECT * FROM alarmclock")
     List<AlarmClock> getAllAlarmClock();
 
+    @Query("SELECT * FROM alarmclock WHERE isActive = " + 1)
+    List<AlarmClock> getAllActiveAlarmClock();
+
     @Query("SELECT COUNT() FROM alarmclock")
     int getAlarmClockCount();
 
