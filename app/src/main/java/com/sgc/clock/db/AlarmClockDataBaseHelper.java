@@ -5,6 +5,9 @@ import android.content.Context;
 
 import com.sgc.clock.model.AlarmClock;
 
+/**
+ * class for working with the alarm clock database
+ */
 public class AlarmClockDataBaseHelper {
 
     private static AlarmClockDataBaseHelper instance;
@@ -64,7 +67,7 @@ public class AlarmClockDataBaseHelper {
     }
 
     /**
-     * delete all alarm clock 
+     * delete all alarm clock
      */
     public void deleteAll() {
         databaseHandler.deleteAll();
