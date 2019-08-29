@@ -35,7 +35,7 @@ public class AlarmClockDataBaseHelper {
         return databaseHandler.addAlarmClock(alarmClock);
     }
 
-    long updateAlarmClockToDataBase(AlarmClock alarmClock) {
+    public long updateAlarmClockToDataBase(AlarmClock alarmClock) {
         long id = -1;
         int updateAlarmClockCount = databaseHandler.updateAlarmClock(alarmClock);
 
