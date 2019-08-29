@@ -45,6 +45,9 @@ public class AlarmClockDataBaseHelper {
         return id;
     }
 
+    AlarmClock getAlarmClock(long id) {
+        return databaseHandler.getAlarmClock((int) id);
+    }
 
     public void deleteAll() {
         databaseHandler.deleteAll();
