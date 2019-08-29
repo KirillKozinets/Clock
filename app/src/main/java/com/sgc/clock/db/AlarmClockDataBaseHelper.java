@@ -31,15 +31,18 @@ public class AlarmClockDataBaseHelper {
         }
     }
 
-    public void addAlarmClockToDataBase(AlarmClock alarmClock) {
-        databaseHandler.addAlarmClock(alarmClock);
+    public long addAlarmClockToDataBase(AlarmClock alarmClock) {
+        return databaseHandler.addAlarmClock(alarmClock);
     }
 
-    public void insertAlarmClockToDataBase(AlarmClock alarmClock) {
+    long updateAlarmClockToDataBase(AlarmClock alarmClock) {
+        long id = -1;
         int updateAlarmClockCount = databaseHandler.updateAlarmClock(alarmClock);
 
         if (updateAlarmClockCount == 0)
-            addAlarmClockToDataBase(alarmClock);
+            id = addAlarmClockToDataBase(alarmClock);
+
+        return id;
     }
 
 
