@@ -31,10 +31,20 @@ public class AlarmClockDataBaseHelper {
         }
     }
 
+    /**
+     * @param alarmClock alarm clock to be added to data base
+     * @return id alarm clock in data base
+     */
     public long addAlarmClockToDataBase(AlarmClock alarmClock) {
         return databaseHandler.addAlarmClock(alarmClock);
     }
 
+    /**
+     * if id updated alarm clock is in the data base
+     * is in the database otherwise add a new alarm clock
+     * @param alarmClock alarm clock to be update in data base
+     * @return if there is no alarm clock then returns added alarm clock id from the data base
+     */
     public long updateAlarmClockToDataBase(AlarmClock alarmClock) {
         long id = -1;
         int updateAlarmClockCount = databaseHandler.updateAlarmClock(alarmClock);
@@ -45,10 +55,17 @@ public class AlarmClockDataBaseHelper {
         return id;
     }
 
+    /**
+     * @param id id alarm clock which want to receive from data base
+     * @return alarm clock by id
+     */
     AlarmClock getAlarmClock(long id) {
         return databaseHandler.getAlarmClock((int) id);
     }
 
+    /**
+     * delete all alarm clock 
+     */
     public void deleteAll() {
         databaseHandler.deleteAll();
     }
