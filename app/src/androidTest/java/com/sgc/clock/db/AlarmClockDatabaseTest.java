@@ -1,4 +1,4 @@
-package com.sgc.clock;
+package com.sgc.clock.db;
 
 import org.junit.After;
 import org.junit.Before;
@@ -96,6 +96,24 @@ public class AlarmClockDatabaseTest extends AndroidTestCase {
         assertEquals(testAlarmClock1, alarmClocks.get(0));
         assertEquals(testAlarmClock2, alarmClocks.get(1));
         assertEquals(testAlarmClock3, alarmClocks.get(2));
+    }
+
+    @Test
+    public void testGetAllActiveAlarmClock() {
+        AlarmClock testAlarmClock1 = new AlarmClock("testAlarmClock", "18:00", "0", true);
+        AlarmClock testAlarmClock2 = new AlarmClock("testAlarmClock2", "18:00", "0", true);
+        AlarmClock testAlarmClock3 = new AlarmClock("testAlarmClock3", "18:00", "0", false);
+
+        databaseHandler.addAlarmClock(testAlarmClock1);
+        databaseHandler.addAlarmClock(testAlarmClock2);
+        databaseHandler.addAlarmClock(testAlarmClock3);
+
+        ArrayList<AlarmClock> alarmClocks = (ArrayList<AlarmClock>) databaseHandler.getAllActiveAlarmClock();
+
+        assertEquals(alarmClocks.size(), 2);
+        assertEquals(databaseHandler.getAlarmClockCount(), 3);
+        assertEquals(testAlarmClock1, alarmClocks.get(0));
+        assertEquals(testAlarmClock2, alarmClocks.get(1));
     }
 
     @Test
