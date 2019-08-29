@@ -9,10 +9,9 @@ public class AlarmClockDataBaseHelper {
 
     private static AlarmClockDataBaseHelper instance;
 
-    public static AlarmClockDataBaseHelper getInstance(Context context)
-    {
-        if (instance== null) {
-                    instance = new AlarmClockDataBaseHelper(context);
+    public static AlarmClockDataBaseHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new AlarmClockDataBaseHelper(context);
         }
 
         return instance;
@@ -39,9 +38,13 @@ public class AlarmClockDataBaseHelper {
     public void insertAlarmClockToDataBase(AlarmClock alarmClock) {
         int updateAlarmClockCount = databaseHandler.updateAlarmClock(alarmClock);
 
-        if(updateAlarmClockCount == 0)
+        if (updateAlarmClockCount == 0)
             addAlarmClockToDataBase(alarmClock);
     }
 
+
+    public void deleteAll() {
+        databaseHandler.deleteAll();
+    }
 
 }
