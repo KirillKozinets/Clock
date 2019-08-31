@@ -1,9 +1,15 @@
 package com.sgc.clock.db;
 
+import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.sgc.clock.model.AlarmClock;
+
+import java.util.List;
+
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * class for working with the alarm clock database
@@ -28,6 +34,7 @@ public class AlarmClockDataBaseHelper {
             dataBase = Room.databaseBuilder(context,
                     AlarmClockDatabase.class, "alarmClock")
                     .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
                     .build();
 
             databaseHandler = dataBase.employeeDao();
@@ -71,6 +78,11 @@ public class AlarmClockDataBaseHelper {
      */
     public void deleteAll() {
         databaseHandler.deleteAll();
+    }
+
+    public Flowable<List<AlarmClock>> getAll()
+    {
+        return databaseHandler.getAllAlarmClock();
     }
 
 }
