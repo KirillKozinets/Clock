@@ -100,7 +100,7 @@ public class AlarmClockDatabaseTest extends AndroidTestCase {
                     assertEquals(testAlarmClock1, employees.get(0));
                     assertEquals(testAlarmClock2, employees.get(1));
                     assertEquals(testAlarmClock3, employees.get(2));
-                });
+                }).dispose();
 
     }
 
