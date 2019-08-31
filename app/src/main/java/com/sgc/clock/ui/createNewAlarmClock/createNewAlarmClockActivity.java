@@ -48,8 +48,8 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        TimeSelectAdapter adapterHours = new TimeSelectAdapter(this, 24, 1);
-        TimeSelectAdapter adapterMinutes = new TimeSelectAdapter(this, 60, 1);
+        TimeSelectAdapter adapterHours = new TimeSelectAdapter(this, 24, 1,1);
+        TimeSelectAdapter adapterMinutes = new TimeSelectAdapter(this, 60, 1,2);
 
         hoursSnapHelper.attachToRecyclerView(hours);
         minutesSnapHelper.attachToRecyclerView(minutes);
@@ -129,9 +129,15 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         return centerView;
     }
 
+    @SuppressLint("DefaultLocale")
     @OnClick(R.id.addAlarmClock)
     public void addNewAlarmClock() {
-        AlarmClockDataBaseHelper.getInstance(this).addAlarmClockToDataBase(new AlarmClock("будильник", hoursLastTextView.getText().toString() + " : "+minutesLastTextView.getText().toString(), "Пн - Пт", true));
+        String hours = hoursLastTextView.getText().toString();
+        String minutes = String.format("%02d",Integer.parseInt(minutesLastTextView.getText().toString()));
+
+        String alarmTime = hours + " : " + minutes;
+
+        AlarmClockDataBaseHelper.getInstance(this).addAlarmClockToDataBase(new AlarmClock("будильник", alarmTime, "Пн - Пт", true));
         onBackPressed();
     }
 
