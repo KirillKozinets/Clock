@@ -59,10 +59,11 @@ public class alarmClockFragment extends Fragment {
         AlarmClockDataBaseHelper.getInstance(getContext()).getAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(employees -> {
-                    AlarmClockListAdapter alarmClockListAdapter = new AlarmClockListAdapter(getActivity(), (ArrayList<AlarmClock>) employees);
-                    alarmList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    alarmList.setAdapter(alarmClockListAdapter);
-
+                    if(getActivity() != null) {
+                        AlarmClockListAdapter alarmClockListAdapter = new AlarmClockListAdapter(getActivity(), (ArrayList<AlarmClock>) employees);
+                        alarmList.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        alarmList.setAdapter(alarmClockListAdapter);
+                    }
                 });
     }
 
