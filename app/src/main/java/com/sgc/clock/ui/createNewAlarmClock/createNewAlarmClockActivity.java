@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.sgc.clock.R;
+import com.sgc.clock.db.AlarmClockDataBaseHelper;
 import com.sgc.clock.model.AlarmClock;
 
 import butterknife.BindView;
@@ -75,10 +76,9 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
 
         int finalHoursPosition = hoursPosition;
         hours.post(() -> toTargetPosition(hoursLayoutManager, hoursSnapHelper, hours, finalHoursPosition));
-        
+
         int finalMinutesPosition = minutesPosition;
         minutes.post(() -> toTargetPosition(minutesLayoutManager, minutesSnapHelper, minutes, finalMinutesPosition));
-
 
     }
 
@@ -131,7 +131,8 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
 
     @OnClick(R.id.addAlarmClock)
     public void addNewAlarmClock() {
-
+        AlarmClockDataBaseHelper.getInstance(this).addAlarmClockToDataBase(new AlarmClock("будильник", hoursLastTextView.getText().toString() + " : "+minutesLastTextView.getText().toString(), "Пн - Пт", true));
+        onBackPressed();
     }
 
     @OnClick(R.id.cancel)
