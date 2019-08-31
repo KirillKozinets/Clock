@@ -9,6 +9,8 @@ import com.sgc.clock.model.AlarmClock;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface AlarmClockDao {
 
@@ -19,7 +21,7 @@ public interface AlarmClockDao {
     AlarmClock getAlarmClock(int id);
 
     @Query("SELECT * FROM alarmclock")
-    List<AlarmClock> getAllAlarmClock();
+    Flowable<List<AlarmClock>>  getAllAlarmClock();
 
     @Query("SELECT * FROM alarmclock WHERE isActive = " + 1)
     List<AlarmClock> getAllActiveAlarmClock();
