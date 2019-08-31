@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:textColor="@android:color/background_dark"
@@ -13,18 +13,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textSize="48sp"
+        android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:textColor="@android:color/background_dark"
-        android:id="@+id/namwAlarm"
+        android:id="@+id/nameAlarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeAlarm" />
 
@@ -34,18 +34,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/namwAlarm"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/nameAlarm"
         app:layout_constraintTop_toBottomOf="@+id/timeAlarm" />
 
     <android.support.v7.widget.SwitchCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="332dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="48dp"
+        android:id="@+id/activeAlarmClock"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toEndOf="@+id/timeAlarm"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
