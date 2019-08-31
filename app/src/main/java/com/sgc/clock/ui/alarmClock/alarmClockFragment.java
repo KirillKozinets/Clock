@@ -49,16 +49,21 @@ public class alarmClockFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_alarm_clock, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        return view;
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void onStart() {
+        super.onStart();
         AlarmClockDataBaseHelper.getInstance(getContext()).getAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(employees -> {
-                    AlarmClockListAdapter alarmClockListAdapter = new AlarmClockListAdapter(getActivity(), (ArrayList<AlarmClock>)employees );
+                    AlarmClockListAdapter alarmClockListAdapter = new AlarmClockListAdapter(getActivity(), (ArrayList<AlarmClock>) employees);
                     alarmList.setLayoutManager(new LinearLayoutManager(getActivity()));
                     alarmList.setAdapter(alarmClockListAdapter);
+
                 });
-
-
-        return view;
     }
 
     @Override
