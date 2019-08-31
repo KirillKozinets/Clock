@@ -8,20 +8,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.sgc.clock.R;
 
+import java.util.Locale;
+
 public class TimeSelectAdapter extends RecyclerView.Adapter<TimeSelectAdapter.TimeHolder> {
 
-    int max;
-    int step;
+    private int symbolLength;
+    private int max;
+    private int step;
     private LayoutInflater inflater;
 
-    public TimeSelectAdapter(Context context, int max, int step) {
+    public TimeSelectAdapter(Context context, int max, int step,int symbolLength) {
         this.max = max;
         this.step = step;
+        this.symbolLength = symbolLength;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -36,7 +39,7 @@ public class TimeSelectAdapter extends RecyclerView.Adapter<TimeSelectAdapter.Ti
     @Override
     public void onBindViewHolder(final TimeHolder holder, final int position) {
         int positionInList = position % max;
-        holder.textView.setText(String.valueOf(positionInList * step));
+        holder.textView.setText(String.format(Locale.US,"%0" + symbolLength + "d",positionInList * step));
         holder.textView.setTextColor(Color.BLACK);
     }
 
