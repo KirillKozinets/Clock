@@ -8,13 +8,17 @@ import org.junit.runner.RunWith;
 import android.arch.persistence.room.Room;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.widget.LinearLayoutManager;
 import android.test.AndroidTestCase;
 
 import com.sgc.clock.model.AlarmClock;
 import com.sgc.clock.db.AlarmClockDao;
 import com.sgc.clock.db.AlarmClockDatabase;
+import com.sgc.clock.ui.alarmClock.AlarmClockListAdapter;
 
 import java.util.ArrayList;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -28,6 +32,7 @@ public class AlarmClockDatabaseTest extends AndroidTestCase {
         dataBase = Room.databaseBuilder(mContext,
                 AlarmClockDatabase.class, "alarmClock")
                 .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
                 .build();
 
         databaseHandler = dataBase.employeeDao();
@@ -89,13 +94,14 @@ public class AlarmClockDatabaseTest extends AndroidTestCase {
         databaseHandler.addAlarmClock(testAlarmClock2);
         databaseHandler.addAlarmClock(testAlarmClock3);
 
-        ArrayList<AlarmClock> alarmClocks = (ArrayList<AlarmClock>) databaseHandler.getAllAlarmClock();
+        databaseHandler.getAllAlarmClock().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(employees -> {
+                    assertEquals(employees.size(), 3);
+                    assertEquals(testAlarmClock1, employees.get(0));
+                    assertEquals(testAlarmClock2, employees.get(1));
+                    assertEquals(testAlarmClock3, employees.get(2));
+                });
 
-        assertEquals(alarmClocks.size(), 3);
-        assertEquals(databaseHandler.getAlarmClockCount(), 3);
-        assertEquals(testAlarmClock1, alarmClocks.get(0));
-        assertEquals(testAlarmClock2, alarmClocks.get(1));
-        assertEquals(testAlarmClock3, alarmClocks.get(2));
     }
 
     @Test
@@ -128,6 +134,6 @@ public class AlarmClockDatabaseTest extends AndroidTestCase {
 
         int countUpdate = databaseHandler.updateAlarmClock(testAlarmClock2);
 
-        assertEquals(countUpdate, 1 );
+        assertEquals(countUpdate, 1);
     }
 }
