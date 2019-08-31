@@ -4,12 +4,16 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.sgc.clock.R;
@@ -30,6 +34,10 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     RecyclerView hours;
     @BindView(R.id.minutes)
     RecyclerView minutes;
+    @BindView(R.id.alarmClockName)
+    ConstraintLayout alarmClockNameChange;
+    @BindView(R.id.description)
+    TextView alarmClockName;
 
     private TextView hoursLastTextView;
     private TextView minutesLastTextView;
@@ -40,6 +48,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager hoursLayoutManager = new LinearLayoutManager(this);
     private RecyclerView.LayoutManager minutesLayoutManager = new LinearLayoutManager(this);
 
+    String description = "Будильник";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +57,8 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        TimeSelectAdapter adapterHours = new TimeSelectAdapter(this, 24, 1,1);
-        TimeSelectAdapter adapterMinutes = new TimeSelectAdapter(this, 60, 1,2);
+        TimeSelectAdapter adapterHours = new TimeSelectAdapter(this, 24, 1, 1);
+        TimeSelectAdapter adapterMinutes = new TimeSelectAdapter(this, 60, 1, 2);
 
         hoursSnapHelper.attachToRecyclerView(hours);
         minutesSnapHelper.attachToRecyclerView(minutes);
@@ -69,6 +78,8 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             hoursPosition = savedInstanceState.getInt("hours");
             minutesPosition = savedInstanceState.getInt("minutes");
+            description = savedInstanceState.getString("description");
+            alarmClockName.setText(description);
         }
 
         hours.scrollToPosition(hoursPosition);
@@ -84,6 +95,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("description", alarmClockName.getText().toString());
         outState.putInt("hours", hoursLayoutManager.getPosition(hoursLastTextView));
         outState.putInt("minutes", minutesLayoutManager.getPosition(minutesLastTextView));
         super.onSaveInstanceState(outState);
@@ -133,16 +145,41 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     @OnClick(R.id.addAlarmClock)
     public void addNewAlarmClock() {
         String hours = hoursLastTextView.getText().toString();
-        String minutes = String.format("%02d",Integer.parseInt(minutesLastTextView.getText().toString()));
+        String minutes = String.format("%02d", Integer.parseInt(minutesLastTextView.getText().toString()));
 
         String alarmTime = hours + " : " + minutes;
 
-        AlarmClockDataBaseHelper.getInstance(this).addAlarmClockToDataBase(new AlarmClock("будильник", alarmTime, "Пн - Пт", true));
+        AlarmClockDataBaseHelper.getInstance(this).addAlarmClockToDataBase(new AlarmClock(description, alarmTime, "Пн - Пт", true));
         onBackPressed();
     }
 
     @OnClick(R.id.cancel)
     public void backToClockActivity() {
         onBackPressed();
+    }
+
+    @OnClick(R.id.alarmClockName)
+    public void setAlarmClockName() {
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.getalarmclockname, null);
+
+        EditText description = promptsView.findViewById(R.id.description);
+        Button ok = promptsView.findViewById(R.id.OK);
+        Button cancel = promptsView.findViewById(R.id.cancel);
+
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this);
+        mDialogBuilder.setView(promptsView);
+
+        AlertDialog alertDialog = mDialogBuilder.create();
+        alertDialog.show();
+
+        ok.setOnClickListener(view -> {
+            this.description = description.getText().toString();
+            alertDialog.cancel();
+            alarmClockName.setText(this.description);
+        });
+
+        cancel.setOnClickListener(view -> alertDialog.cancel());
+
     }
 }
