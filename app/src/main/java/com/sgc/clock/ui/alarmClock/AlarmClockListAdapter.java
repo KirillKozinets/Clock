@@ -9,9 +9,11 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.sgc.clock.R;
+import com.sgc.clock.db.AlarmClockDataBaseHelper;
 import com.sgc.clock.model.AlarmClock;
 
 import java.util.ArrayList;
@@ -40,6 +42,12 @@ public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAd
         holder.nameAlarm.setText(alarmClocks.get(position).getAlarmClockName());
         holder.dayOfWeek.setText(alarmClocks.get(position).getAlarmClockDaysOfWeek());
         holder.activeAlarmClock.setChecked(alarmClocks.get(position).getActive());
+
+        holder.activeAlarmClock.setOnCheckedChangeListener((compoundButton, b) -> {
+            AlarmClock updateAlarmClock = alarmClocks.get(position);
+            updateAlarmClock.setActive(b);
+            AlarmClockDataBaseHelper.getInstance(inflater.getContext()).updateAlarmClockToDataBase(updateAlarmClock);
+        });
     }
 
     @Override
