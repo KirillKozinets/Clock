@@ -48,6 +48,9 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager hoursLayoutManager = new LinearLayoutManager(this);
     private RecyclerView.LayoutManager minutesLayoutManager = new LinearLayoutManager(this);
 
+    private int hoursPosition = 2408;
+    private int minutesPosition = 2400;
+
     String description = "Будильник";
 
     @Override
@@ -60,37 +63,37 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         TimeSelectAdapter adapterHours = new TimeSelectAdapter(this, 24, 1, 1);
         TimeSelectAdapter adapterMinutes = new TimeSelectAdapter(this, 60, 1, 2);
 
-        hoursSnapHelper.attachToRecyclerView(hours);
-        minutesSnapHelper.attachToRecyclerView(minutes);
+        loadInstanceState(savedInstanceState);
 
-        hours.setLayoutManager(hoursLayoutManager);
-        minutes.setLayoutManager(minutesLayoutManager);
+        installationRecyclerView(
+                hours, hoursSnapHelper, hoursLayoutManager,
+                adapterHours, recyclerViewScrollListenerHours, hoursPosition);
 
-        hours.setAdapter(adapterHours);
-        minutes.setAdapter(adapterMinutes);
+        installationRecyclerView(
+                minutes, minutesSnapHelper, minutesLayoutManager,
+                adapterMinutes, recyclerViewScrollListenerMinutes, minutesPosition);
+    }
 
-        hours.addOnScrollListener(recyclerViewScrollListenerHours);
-        minutes.addOnScrollListener(recyclerViewScrollListenerMinutes);
 
-        int hoursPosition = 2408;
-        int minutesPosition = 2400;
+    private void installationRecyclerView(RecyclerView recyclerView, LinearSnapHelper snapHelper,
+                                          RecyclerView.LayoutManager layoutManager, TimeSelectAdapter adapter,
+                                          RecyclerView.OnScrollListener scrollListener, int position) {
 
+        snapHelper.attachToRecyclerView(recyclerView);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(scrollListener);
+        recyclerView.scrollToPosition(position);
+        recyclerView.post(() -> toTargetPosition(layoutManager, snapHelper, recyclerView, position));
+    }
+
+    private void loadInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             hoursPosition = savedInstanceState.getInt("hours");
             minutesPosition = savedInstanceState.getInt("minutes");
             description = savedInstanceState.getString("description");
             alarmClockName.setText(description);
         }
-
-        hours.scrollToPosition(hoursPosition);
-        minutes.scrollToPosition(minutesPosition);
-
-        int finalHoursPosition = hoursPosition;
-        hours.post(() -> toTargetPosition(hoursLayoutManager, hoursSnapHelper, hours, finalHoursPosition));
-
-        int finalMinutesPosition = minutesPosition;
-        minutes.post(() -> toTargetPosition(minutesLayoutManager, minutesSnapHelper, minutes, finalMinutesPosition));
-
     }
 
     @Override
@@ -146,7 +149,6 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     public void addNewAlarmClock() {
         String hours = hoursLastTextView.getText().toString();
         String minutes = String.format("%02d", Integer.parseInt(minutesLastTextView.getText().toString()));
-
         String alarmTime = hours + " : " + minutes;
 
         AlarmClockDataBaseHelper.getInstance(this).addAlarmClockToDataBase(new AlarmClock(description, alarmTime, "Пн - Пт", true));
@@ -167,19 +169,24 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         Button ok = promptsView.findViewById(R.id.OK);
         Button cancel = promptsView.findViewById(R.id.cancel);
 
-        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this);
-        mDialogBuilder.setView(promptsView);
-
-        AlertDialog alertDialog = mDialogBuilder.create();
+        AlertDialog alertDialog = createChangeDescriptionAlertDialog(promptsView);
         alertDialog.show();
 
-        ok.setOnClickListener(view -> {
-            this.description = description.getText().toString();
-            alertDialog.cancel();
-            alarmClockName.setText(this.description);
-        });
-
+        ok.setOnClickListener(view -> changeAlarmClockDescription(description, alertDialog));
         cancel.setOnClickListener(view -> alertDialog.cancel());
-
     }
+
+    private void changeAlarmClockDescription(EditText description, AlertDialog alertDialog) {
+        this.description = description.getText().toString();
+        alertDialog.cancel();
+        alarmClockName.setText(this.description);
+    }
+
+    private AlertDialog createChangeDescriptionAlertDialog(View promptsView) {
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this);
+        mDialogBuilder.setView(promptsView);
+        AlertDialog alertDialog = mDialogBuilder.create();
+        return alertDialog;
+    }
+
 }
