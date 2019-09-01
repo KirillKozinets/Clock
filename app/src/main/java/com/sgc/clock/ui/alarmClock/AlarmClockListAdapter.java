@@ -46,18 +46,19 @@ public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAd
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(final TimeHolder holder, final int position) {
-        holder.timeAlarm.setText(alarmClocks.get(position).getAlarmClockTime());
-        holder.nameAlarm.setText(alarmClocks.get(position).getAlarmClockName());
-        holder.dayOfWeek.setText(alarmClocks.get(position).getAlarmClockDaysOfWeek());
-        holder.activeAlarmClock.setChecked(alarmClocks.get(position).getActive());
+        AlarmClock alarmClockItem = alarmClocks.get(position);
+
+        holder.timeAlarm.setText(alarmClockItem.getAlarmClockTime());
+        holder.nameAlarm.setText(alarmClockItem.getAlarmClockName());
+        holder.dayOfWeek.setText(alarmClockItem.getAlarmClockDaysOfWeek());
+        holder.activeAlarmClock.setChecked(alarmClockItem.getActive());
 
         holder.activeAlarmClock.setOnCheckedChangeListener((compoundButton, b) -> {
-            AlarmClock updateAlarmClock = alarmClocks.get(position);
-            updateAlarmClock.setActive(b);
-            AlarmClockDataBaseHelper.getInstance(inflater.getContext()).updateAlarmClockToDataBase(updateAlarmClock);
+            alarmClockItem.setActive(b);
+            AlarmClockDataBaseHelper.getInstance(inflater.getContext()).updateAlarmClockToDataBase(alarmClockItem);
         });
 
-        holder.itemView.setOnClickListener(view->alarmClockClickListener.alarmClockItemClick(alarmClocks.get(position).get_id()));
+        holder.itemView.setOnClickListener(view->alarmClockClickListener.alarmClockItemClick(alarmClockItem.get_id()));
     }
 
     @Override
