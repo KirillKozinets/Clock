@@ -23,9 +23,17 @@ public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAd
     ArrayList<AlarmClock> alarmClocks;
     LayoutInflater inflater;
 
-    public AlarmClockListAdapter(Context context, ArrayList<AlarmClock> alarmClocks) {
+    AlarmClockClickListener alarmClockClickListener;
+
+    public interface AlarmClockClickListener{
+        void alarmClockItemClick(int alarmClockId);
+    }
+
+
+    public AlarmClockListAdapter(Context context, ArrayList<AlarmClock> alarmClocks , AlarmClockClickListener alarmClockClickListener) {
         this.alarmClocks = alarmClocks;
         this.inflater = LayoutInflater.from(context);
+        this.alarmClockClickListener =alarmClockClickListener;
     }
 
     @Override
@@ -48,6 +56,8 @@ public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAd
             updateAlarmClock.setActive(b);
             AlarmClockDataBaseHelper.getInstance(inflater.getContext()).updateAlarmClockToDataBase(updateAlarmClock);
         });
+
+        holder.itemView.setOnClickListener(view->alarmClockClickListener.alarmClockItemClick(alarmClocks.get(position).get_id()));
     }
 
     @Override

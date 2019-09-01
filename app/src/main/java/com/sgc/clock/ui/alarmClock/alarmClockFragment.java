@@ -28,7 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class alarmClockFragment extends Fragment {
+public class alarmClockFragment extends Fragment implements AlarmClockListAdapter.AlarmClockClickListener {
 
 
     @BindView(R.id.alarmList)
@@ -36,6 +36,8 @@ public class alarmClockFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.create)
     Button create;
+
+    private final String TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK = "changeId";
 
     public alarmClockFragment() {
 
@@ -59,8 +61,8 @@ public class alarmClockFragment extends Fragment {
         AlarmClockDataBaseHelper.getInstance(getContext()).getAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(employees -> {
-                    if(getActivity() != null) {
-                        AlarmClockListAdapter alarmClockListAdapter = new AlarmClockListAdapter(getActivity(), (ArrayList<AlarmClock>) employees);
+                    if (getActivity() != null) {
+                        AlarmClockListAdapter alarmClockListAdapter = new AlarmClockListAdapter(getActivity(), (ArrayList<AlarmClock>) employees, this);
                         alarmList.setLayoutManager(new LinearLayoutManager(getActivity()));
                         alarmList.setAdapter(alarmClockListAdapter);
                     }
@@ -75,7 +77,14 @@ public class alarmClockFragment extends Fragment {
 
     @OnClick(R.id.create)
     public void onViewClicked() {
-        Intent intent = new Intent(getActivity(),createNewAlarmClockActivity.class);
+        Intent intent = new Intent(getActivity(), createNewAlarmClockActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void alarmClockItemClick(int alarmClockId) {
+        Intent intent = new Intent(getActivity(), createNewAlarmClockActivity.class);
+        intent.putExtra(TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK, alarmClockId);
         startActivity(intent);
     }
 }
