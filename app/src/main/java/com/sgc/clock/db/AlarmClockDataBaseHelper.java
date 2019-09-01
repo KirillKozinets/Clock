@@ -69,7 +69,7 @@ public class AlarmClockDataBaseHelper {
      * @param id id alarm clock which want to receive from data base
      * @return alarm clock by id
      */
-    AlarmClock getAlarmClock(long id) {
+    public AlarmClock getAlarmClock(long id) {
         return databaseHandler.getAlarmClock((int) id);
     }
 
