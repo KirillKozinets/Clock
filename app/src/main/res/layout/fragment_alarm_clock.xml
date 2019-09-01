@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.alarmClock.alarmClockFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/alarmList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/create"
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Создать" />
-</LinearLayout>
+        android:background="@drawable/oval_button"
+        app:itemIconTint="@color/blue"
+        app:itemTextColor="@color/blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/alarm_clock_navigation_menu" />
+
+
+</android.support.constraint.ConstraintLayout>

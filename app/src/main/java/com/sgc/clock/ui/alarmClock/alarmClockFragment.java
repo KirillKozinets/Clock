@@ -4,13 +4,15 @@ package com.sgc.clock.ui.alarmClock;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.sgc.clock.R;
 import com.sgc.clock.db.AlarmClockDataBaseHelper;
@@ -18,15 +20,12 @@ import com.sgc.clock.model.AlarmClock;
 import com.sgc.clock.ui.createNewAlarmClock.createNewAlarmClockActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 public class alarmClockFragment extends Fragment implements AlarmClockListAdapter.AlarmClockClickListener {
 
@@ -34,11 +33,11 @@ public class alarmClockFragment extends Fragment implements AlarmClockListAdapte
     @BindView(R.id.alarmList)
     RecyclerView alarmList;
     Unbinder unbinder;
-    @BindView(R.id.create)
-    Button create;
 
     public static final String TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK = "changeId";
     public static final String TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE = "createAlarmClockActivityTitle";
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomNavigation;
 
     public alarmClockFragment() {
 
@@ -51,6 +50,15 @@ public class alarmClockFragment extends Fragment implements AlarmClockListAdapte
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alarm_clock, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        bottomNavigation.setOnNavigationItemSelectedListener(
+                item -> {
+                    switch (item.getItemId()) {
+                        case R.id.add_alarm_clock:
+                            startCreateAlarmClockActivity();
+                    }
+                    return true;
+                });
 
         return view;
     }
@@ -76,8 +84,7 @@ public class alarmClockFragment extends Fragment implements AlarmClockListAdapte
         unbinder.unbind();
     }
 
-    @OnClick(R.id.create)
-    public void onViewClicked() {
+    public void startCreateAlarmClockActivity() {
         Intent intent = new Intent(getActivity(), createNewAlarmClockActivity.class);
         startActivity(intent);
     }
