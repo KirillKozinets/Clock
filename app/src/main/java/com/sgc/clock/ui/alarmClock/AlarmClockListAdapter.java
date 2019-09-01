@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAdapter.TimeHolder> {
 
-    ArrayList<AlarmClock> alarmClocks = new ArrayList<>();
+    ArrayList<AlarmClock> alarmClocks;
     LayoutInflater inflater;
 
     public AlarmClockListAdapter(Context context, ArrayList<AlarmClock> alarmClocks) {
