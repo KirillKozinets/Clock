@@ -46,6 +46,8 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     TextView alarmClockName;
     @BindView(R.id.title)
     TextView mainTitle;
+    @BindView(R.id.delete)
+    Button delete;
 
     private TextView hoursLastTextView;
     private TextView minutesLastTextView;
@@ -95,6 +97,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
             showAlarmClockFromIntent(alarmClockId);
             alarmClockChangeId = alarmClockId;
             isChangeAlarmClock = true;
+            delete.setVisibility(View.VISIBLE);
         }
 
         if (title != null)
@@ -252,4 +255,9 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         return alertDialog;
     }
 
+    @OnClick(R.id.delete)
+    public void deleteAlarmClock() {
+        AlarmClockDataBaseHelper.getInstance(getApplicationContext()).deleteAlarmClockById(alarmClockChangeId);
+        backToClockActivity();
+    }
 }
