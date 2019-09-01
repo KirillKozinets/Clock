@@ -1,6 +1,7 @@
 package com.sgc.clock.model;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.Room;
 
@@ -17,10 +18,26 @@ public class AlarmClock {
     private boolean isActive;
 
     /**
+     * @param alarmClockId         alarm clock id
      * @param alarmClockName       alarm clock name
      * @param alarmClockTime       alarm clock start time
      * @param alarmClockDaysOfWeek alarm clock start days of week
-     * @param isActive included alarm clock
+     * @param isActive             included alarm clock
+     */
+    @Ignore
+    public AlarmClock(int alarmClockId, String alarmClockName, String alarmClockTime, String alarmClockDaysOfWeek, boolean isActive) {
+        this._id = alarmClockId;
+        this.alarmClockName = alarmClockName;
+        this.alarmClockTime = alarmClockTime;
+        this.alarmClockDaysOfWeek = alarmClockDaysOfWeek;
+        this.isActive = isActive;
+    }
+
+    /**
+     * @param alarmClockName       alarm clock name
+     * @param alarmClockTime       alarm clock start time
+     * @param alarmClockDaysOfWeek alarm clock start days of week
+     * @param isActive             included alarm clock
      */
     public AlarmClock(String alarmClockName, String alarmClockTime, String alarmClockDaysOfWeek, boolean isActive) {
         this.alarmClockName = alarmClockName;
@@ -88,7 +105,7 @@ public class AlarmClock {
         if (!this.getAlarmClockTime().equals(alarmClock.getAlarmClockTime()))
             isEquals = false;
 
-        if(this.isActive != alarmClock.isActive)
+        if (this.isActive != alarmClock.isActive)
             isEquals = false;
 
         return isEquals;
