@@ -37,7 +37,8 @@ public class alarmClockFragment extends Fragment implements AlarmClockListAdapte
     @BindView(R.id.create)
     Button create;
 
-    private final String TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK = "changeId";
+    public static final String TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK = "changeId";
+    public static final String TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE = "createAlarmClockActivityTitle";
 
     public alarmClockFragment() {
 
@@ -85,6 +86,7 @@ public class alarmClockFragment extends Fragment implements AlarmClockListAdapte
     public void alarmClockItemClick(int alarmClockId) {
         Intent intent = new Intent(getActivity(), createNewAlarmClockActivity.class);
         intent.putExtra(TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK, alarmClockId);
+        intent.putExtra(TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE, "Изменить");
         startActivity(intent);
     }
 }
