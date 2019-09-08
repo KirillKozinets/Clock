@@ -20,11 +20,11 @@ public class AlarmClockReceiver extends BroadcastReceiver {
         i.putExtra("alarmClock", alarmClockByteArray);
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            AlarmManagerUtil.setAlarm(AlarmClockConverter.convertByteArrayToAlarmClock(alarmClockByteArray).get_id(), context);
+            AlarmManagerUtil.setAlarm(AlarmClockConverter.convertByteArrayToAlarmClock(alarmClockByteArray), context);
         }
         if (Intent.ACTION_TIME_CHANGED.equals(i.getAction()) || Intent.ACTION_TIMEZONE_CHANGED.equals(i.getAction())) {
             AlarmManagerUtil.cancel(AlarmClockConverter.convertByteArrayToAlarmClock(alarmClockByteArray), context);
-            AlarmManagerUtil.setAlarm(AlarmClockConverter.convertByteArrayToAlarmClock(alarmClockByteArray).get_id(), context);
+            AlarmManagerUtil.setAlarm(AlarmClockConverter.convertByteArrayToAlarmClock(alarmClockByteArray), context);
         }
 
         context.startService(i);
