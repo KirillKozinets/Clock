@@ -1,29 +1,28 @@
-package com.sgc.clock.ui.alarmClock;
+package com.sgc.clock.ui.fragment;
 
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sgc.clock.R;
+import com.sgc.clock.adapter.AlarmClockListAdapter;
 import com.sgc.clock.db.AlarmClockDataBaseHelper;
 import com.sgc.clock.model.AlarmClock;
-import com.sgc.clock.ui.createNewAlarmClock.createNewAlarmClockActivity;
+import com.sgc.clock.ui.activity.createNewAlarmClockActivity;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -36,8 +35,14 @@ public class alarmClockFragment extends Fragment implements AlarmClockListAdapte
 
     public static final String TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK = "changeId";
     public static final String TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE = "createAlarmClockActivityTitle";
+
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigation;
+
+    AlarmClockListAdapter alarmClockListAdapter;
+
+    final int REQUEST_CHANGE_ALARM_CLOCK = 1;
+    final int REQUEST_NEW_ALARM_CLOCK = 2;
 
     public alarmClockFragment() {
 
@@ -63,6 +68,11 @@ public class alarmClockFragment extends Fragment implements AlarmClockListAdapte
         return view;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @SuppressLint("CheckResult")
     @Override
     public void onStart() {
@@ -71,9 +81,12 @@ public class alarmClockFragment extends Fragment implements AlarmClockListAdapte
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(employees -> {
                     if (getActivity() != null) {
-                        AlarmClockListAdapter alarmClockListAdapter = new AlarmClockListAdapter(getActivity(), (ArrayList<AlarmClock>) employees, this);
-                        alarmList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        alarmList.setAdapter(alarmClockListAdapter);
+                        if (alarmClockListAdapter == null) {
+                            alarmClockListAdapter = new AlarmClockListAdapter(getActivity(), (ArrayList<AlarmClock>) employees, this);
+                            alarmList.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            alarmList.setAdapter(alarmClockListAdapter);
+                        }
+                        alarmClockListAdapter.setData((ArrayList<AlarmClock>) employees);
                     }
                 });
     }
@@ -86,7 +99,13 @@ public class alarmClockFragment extends Fragment implements AlarmClockListAdapte
 
     public void startCreateAlarmClockActivity() {
         Intent intent = new Intent(getActivity(), createNewAlarmClockActivity.class);
-        startActivity(intent);
+        getActivity().startActivityForResult(intent, REQUEST_NEW_ALARM_CLOCK);
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+
     }
 
     @Override
@@ -94,6 +113,8 @@ public class alarmClockFragment extends Fragment implements AlarmClockListAdapte
         Intent intent = new Intent(getActivity(), createNewAlarmClockActivity.class);
         intent.putExtra(TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK, alarmClockId);
         intent.putExtra(TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE, "Изменить");
-        startActivity(intent);
+        getActivity().startActivityForResult(intent, REQUEST_CHANGE_ALARM_CLOCK);
     }
+
+
 }
