@@ -1,4 +1,4 @@
-package com.sgc.clock.ui.createNewAlarmClock;
+package com.sgc.clock.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,8 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.sgc.clock.R;
+import com.sgc.clock.adapter.TimeSelectAdapter;
 import com.sgc.clock.db.AlarmClockDataBaseHelper;
 import com.sgc.clock.model.AlarmClock;
+import com.sgc.clock.util.AlarmManagerUtil;
+import com.sgc.clock.util.ParcelableUtil;
 
 import java.util.Arrays;
 
@@ -27,8 +30,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.sgc.clock.ui.alarmClock.alarmClockFragment.TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE;
-import static com.sgc.clock.ui.alarmClock.alarmClockFragment.TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK;
+import static com.sgc.clock.ui.fragment.alarmClockFragment.TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE;
+import static com.sgc.clock.ui.fragment.alarmClockFragment.TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK;
 
 public class createNewAlarmClockActivity extends AppCompatActivity {
 
@@ -206,22 +209,27 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     @SuppressLint("DefaultLocale")
     @OnClick(R.id.addAlarmClock)
     public void addNewAlarmClock() {
-        AlarmClockDataBaseHelper alarmClockDataBaseHelper = AlarmClockDataBaseHelper.getInstance(this);
-
         String hours = hoursLastTextView.getText().toString();
         String minutes = String.format("%02d", Integer.parseInt(minutesLastTextView.getText().toString()));
         String alarmTime = hours + " : " + minutes;
 
-        if (!isChangeAlarmClock)
-            alarmClockDataBaseHelper.addAlarmClockToDataBase(new AlarmClock(alarmClockDescription, alarmTime, "Пн - Пт", true));
-        else
-            alarmClockDataBaseHelper.updateAlarmClockToDataBase(new AlarmClock(alarmClockChangeId, alarmClockDescription, alarmTime, "Пн - Пт", true));
+        AlarmClock alarmClock = new AlarmClock(alarmClockDescription, alarmTime, "Без повторов", true);
+        if (isChangeAlarmClock)
+            alarmClock.set_id(alarmClockChangeId);
+
+        byte[] alarmClockByteArray = ParcelableUtil.marshall(alarmClock);
+
+        Intent intent = new Intent(this, clockActivity.class);
+        intent.putExtra("alarmClock", alarmClockByteArray);
+        setResult(RESULT_OK, intent);
 
         onBackPressed();
     }
 
+
     @OnClick(R.id.cancel)
     public void backToClockActivity() {
+        setResult(RESULT_CANCELED);
         onBackPressed();
     }
 
@@ -257,7 +265,9 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
 
     @OnClick(R.id.delete)
     public void deleteAlarmClock() {
+        AlarmManagerUtil.cancel(AlarmClockDataBaseHelper.getInstance(getApplicationContext()).getAlarmClock(alarmClockChangeId), getApplicationContext());
         AlarmClockDataBaseHelper.getInstance(getApplicationContext()).deleteAlarmClockById(alarmClockChangeId);
-        backToClockActivity();
+        setResult(RESULT_CANCELED);
+        onBackPressed();
     }
 }
