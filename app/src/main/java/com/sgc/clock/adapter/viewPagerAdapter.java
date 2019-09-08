@@ -1,10 +1,11 @@
-package com.sgc.clock.ui.clock;
+package com.sgc.clock.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.sgc.clock.ui.alarmClock.alarmClockFragment;
+import com.sgc.clock.ui.fragment.alarmClockFragment;
+
 
 public class viewPagerAdapter extends FragmentPagerAdapter {
 
