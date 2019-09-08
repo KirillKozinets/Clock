@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sgc.clock">
 
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
+        android:name=".util.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
@@ -11,16 +15,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity
-            android:name=".ui.createNewAlarmClock.createNewAlarmClockActivity">
-        </activity>
-        <activity android:name=".ui.clock.clockActivity">
+
+        <service android:enabled="true"
+            android:exported="true" android:name=".service.OrderReminderNotificationService"/>
+
+        <activity android:name=".ui.activity.createNewAlarmClockActivity" />
+
+        <activity android:name=".ui.activity.clockActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:enabled="true"
+            android:exported="true" android:name=".receiver.AlarmClockReceiver"/>
+
     </application>
+
+
 
 </manifest>
