@@ -4,18 +4,30 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.Room;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.sgc.clock.db.AlarmClockDao;
 import com.sgc.clock.db.AlarmClockDatabase;
 
 @Entity
-public class AlarmClock {
+public class AlarmClock implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int _id = 0;
     private String alarmClockName;
     private String alarmClockTime;
     private String alarmClockDaysOfWeek;
     private boolean isActive;
+
+
+    @Ignore
+    public AlarmClock(AlarmClock alarmClock) {
+        this._id = alarmClock._id;
+        this.alarmClockName = alarmClock.alarmClockName;
+        this.alarmClockTime = alarmClock.alarmClockTime;
+        this.alarmClockDaysOfWeek = alarmClock.alarmClockDaysOfWeek;
+        this.isActive = alarmClock.isActive;
+    }
 
     /**
      * @param alarmClockId         alarm clock id
@@ -31,6 +43,17 @@ public class AlarmClock {
         this.alarmClockTime = alarmClockTime;
         this.alarmClockDaysOfWeek = alarmClockDaysOfWeek;
         this.isActive = isActive;
+    }
+
+    @Ignore
+    public AlarmClock(Parcel in) {
+        String[] data = new String[5];
+        in.readStringArray(data);
+        this._id = Integer.parseInt(data[0]);
+        this.alarmClockName = data[1];
+        this.alarmClockTime = data[2];
+        this.alarmClockDaysOfWeek = data[3];
+        this.isActive = Boolean.parseBoolean(data[4]);
     }
 
     /**
@@ -110,5 +133,29 @@ public class AlarmClock {
 
         return isEquals;
     }
+
+    public int getHorse(){
+        String horseStr = alarmClockTime.split(" : ")[0];
+        int horse = Integer.parseInt(horseStr);
+        return horse;
+    }
+
+    public int getMinutes(){
+        String minutesStr = alarmClockTime.split(" : ")[1];
+        int minutes = Integer.parseInt(minutesStr);
+        return minutes;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeStringArray(new String[] { Integer.toString(_id), alarmClockName, alarmClockTime, alarmClockDaysOfWeek,Boolean.toString(isActive) });
+    }
+
+
 }
 
