@@ -1,20 +1,19 @@
-package com.sgc.clock.ui.alarmClock;
+package com.sgc.clock.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.sgc.clock.R;
 import com.sgc.clock.db.AlarmClockDataBaseHelper;
 import com.sgc.clock.model.AlarmClock;
+import com.sgc.clock.util.AlarmManagerUtil;
 
 import java.util.ArrayList;
 
@@ -25,15 +24,19 @@ public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAd
 
     AlarmClockClickListener alarmClockClickListener;
 
-    public interface AlarmClockClickListener{
+    public interface AlarmClockClickListener {
         void alarmClockItemClick(int alarmClockId);
     }
 
+    public void setData(ArrayList<AlarmClock> data) {
+        alarmClocks = data;
+        notifyDataSetChanged();
+    }
 
-    public AlarmClockListAdapter(Context context, ArrayList<AlarmClock> alarmClocks , AlarmClockClickListener alarmClockClickListener) {
+    public AlarmClockListAdapter(Context context, ArrayList<AlarmClock> alarmClocks, AlarmClockClickListener alarmClockClickListener) {
         this.alarmClocks = alarmClocks;
         this.inflater = LayoutInflater.from(context);
-        this.alarmClockClickListener =alarmClockClickListener;
+        this.alarmClockClickListener = alarmClockClickListener;
     }
 
     @Override
@@ -51,14 +54,17 @@ public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAd
         holder.timeAlarm.setText(alarmClockItem.getAlarmClockTime());
         holder.nameAlarm.setText(alarmClockItem.getAlarmClockName());
         holder.dayOfWeek.setText(alarmClockItem.getAlarmClockDaysOfWeek());
-        holder.activeAlarmClock.setChecked(alarmClockItem.getActive());
 
         holder.activeAlarmClock.setOnCheckedChangeListener((compoundButton, b) -> {
-            alarmClockItem.setActive(b);
-            AlarmClockDataBaseHelper.getInstance(inflater.getContext()).updateAlarmClockToDataBase(alarmClockItem);
+            if (alarmClockItem.getActive() != b) {
+                alarmClockItem.setActive(b);
+                AlarmClockDataBaseHelper.getInstance(inflater.getContext()).updateAlarmClockToDataBase(alarmClockItem);
+                AlarmManagerUtil.setAlarm(alarmClockItem.get_id(), inflater.getContext());
+            }
         });
 
-        holder.itemView.setOnClickListener(view->alarmClockClickListener.alarmClockItemClick(alarmClockItem.get_id()));
+        holder.activeAlarmClock.setChecked(alarmClockItem.getActive());
+        holder.itemView.setOnClickListener(view -> alarmClockClickListener.alarmClockItemClick(alarmClockItem.get_id()));
     }
 
     @Override
