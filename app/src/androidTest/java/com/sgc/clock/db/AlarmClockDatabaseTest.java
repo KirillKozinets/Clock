@@ -8,14 +8,9 @@ import org.junit.runner.RunWith;
 import android.arch.persistence.room.Room;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v7.widget.LinearLayoutManager;
 import android.test.AndroidTestCase;
 
 import com.sgc.clock.model.AlarmClock;
-import com.sgc.clock.db.AlarmClockDao;
-import com.sgc.clock.db.AlarmClockDatabase;
-import com.sgc.clock.ui.alarmClock.AlarmClockListAdapter;
-
 import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
