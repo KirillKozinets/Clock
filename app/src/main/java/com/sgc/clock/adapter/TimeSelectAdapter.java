@@ -1,4 +1,4 @@
-package com.sgc.clock.ui.createNewAlarmClock;
+package com.sgc.clock.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
