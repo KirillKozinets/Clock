@@ -69,6 +69,7 @@ public class AlarmClock implements Parcelable {
         this.isActive = isActive;
     }
 
+
     public int get_id() {
         return _id;
     }
@@ -156,6 +157,17 @@ public class AlarmClock implements Parcelable {
         parcel.writeStringArray(new String[] { Integer.toString(_id), alarmClockName, alarmClockTime, alarmClockDaysOfWeek,Boolean.toString(isActive) });
     }
 
+    public static final Creator<AlarmClock> CREATOR = new Creator<AlarmClock>() {
+        @Override
+        public AlarmClock createFromParcel(Parcel in) {
+            return new AlarmClock(in);
+        }
+
+        @Override
+        public AlarmClock[] newArray(int size) {
+            return new AlarmClock[size];
+        }
+    };
 
 }
 
