@@ -12,14 +12,22 @@ import com.sgc.clock.db.AlarmClockDatabase;
 
 @Entity
 public class AlarmClock implements Parcelable {
+
+
     @PrimaryKey(autoGenerate = true)
     private int _id = 0;
     private String alarmClockName;
     private String alarmClockTime;
     private String alarmClockDaysOfWeek;
+
+    // = true if alarm clock active
+    // = false if alarm clock not active
     private boolean isActive;
 
-
+    /**
+     * copy constructor
+     * @param alarmClock alarm clock which you want to copy
+     */
     @Ignore
     public AlarmClock(AlarmClock alarmClock) {
         this._id = alarmClock._id;
@@ -45,6 +53,9 @@ public class AlarmClock implements Parcelable {
         this.isActive = isActive;
     }
 
+    /**
+     * @param in send alarm clock parcel
+     */
     @Ignore
     public AlarmClock(Parcel in) {
         String[] data = new String[5];
@@ -86,6 +97,9 @@ public class AlarmClock implements Parcelable {
         return alarmClockDaysOfWeek;
     }
 
+    /**
+     * @return true if alarm clock active , false if alarm clock not active
+     */
     public boolean getActive() {
         return isActive;
     }
