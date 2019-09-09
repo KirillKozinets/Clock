@@ -61,7 +61,6 @@ public class AlarmClockReceiver extends BroadcastReceiver {
 
         if (Intent.ACTION_TIME_CHANGED.equals(intentAction)
                 || Intent.ACTION_TIMEZONE_CHANGED.equals(intentAction)) {
-
             return true;
         }
 
