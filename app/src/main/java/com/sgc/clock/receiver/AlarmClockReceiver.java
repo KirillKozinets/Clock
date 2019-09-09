@@ -16,24 +16,38 @@ public class AlarmClockReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
+        //create intent for start service
         Intent i = new Intent(context, OrderReminderNotificationService.class);
+
+        //get alarm clock from intent
         byte[] alarmClockByteArray = intent.getByteArrayExtra("alarmClock");
+
+        //put alarm clock to intent
         i.putExtra("alarmClock", alarmClockByteArray);
 
-        if (checkReboot(intent))
-            AlarmManagerUtil.setAlarm(AlarmClockConverter.convertByteArrayToAlarmClock(alarmClockByteArray), context);
+        //convert alarm clock in the format bite array
+        // to alarm clock because you cant send Parcelable to alarmManager
+        //using intent
+        AlarmClock alarmClock = AlarmClockConverter.convertByteArrayToAlarmClock(alarmClockByteArray);
 
+        //when rebooting the device alarm cancel
+        //so need to set the alarm again
+        if (checkReboot(intent))
+            AlarmManagerUtil.setAlarm(alarmClock, context);
+
+        //when changing time need reset alarm
         if (checkTimeChanged(intent)) {
-            AlarmManagerUtil.cancel(AlarmClockConverter.convertByteArrayToAlarmClock(alarmClockByteArray), context);
-            AlarmManagerUtil.setAlarm(AlarmClockConverter.convertByteArrayToAlarmClock(alarmClockByteArray), context);
+            AlarmManagerUtil.cancel(alarmClock, context);
+            AlarmManagerUtil.setAlarm(alarmClock, context);
         }
 
+        // start service for work the alarm
         context.startService(i);
 
         setResultCode(Activity.RESULT_OK);
-
     }
 
+    //checks if the device has been reboot
     private boolean checkReboot(Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             return true;
@@ -41,6 +55,7 @@ public class AlarmClockReceiver extends BroadcastReceiver {
         return false;
     }
 
+    //checks if the time has been changed
     private boolean checkTimeChanged(Intent intent) {
         String intentAction = intent.getAction();
 
