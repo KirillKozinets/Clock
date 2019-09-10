@@ -92,6 +92,28 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
                 adapterMinutes, recyclerViewScrollListenerMinutes, minutesPosition);
     }
 
+    private void installationRecyclerView(RecyclerView recyclerView, LinearSnapHelper snapHelper,
+                                          RecyclerView.LayoutManager layoutManager, TimeSelectAdapter adapter,
+                                          RecyclerView.OnScrollListener scrollListener, int position) {
+
+        snapHelper.attachToRecyclerView(recyclerView);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(scrollListener);
+        recyclerView.scrollToPosition(position);
+        recyclerView.post(() -> toTargetPosition(layoutManager, snapHelper, recyclerView, position));
+    }
+
+    private void toTargetPosition(RecyclerView.LayoutManager LayoutManager, LinearSnapHelper snap, RecyclerView recyclerView, int position) {
+        View view = LayoutManager.findViewByPosition(position);
+        if (view != null) {
+            int[] snapDistance = snap.calculateDistanceToFinalSnap(LayoutManager, view);
+            if (snapDistance[0] != 0 || snapDistance[1] != 0) {
+                recyclerView.scrollBy(snapDistance[0], snapDistance[1]);
+            }
+        }
+    }
+
     private void loadAlarmClockFromIntent() {
         Intent intent = getIntent();
         int alarmClockId = intent.getIntExtra(TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK, -1);
@@ -138,18 +160,6 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         alarmClockDescription = alarmClockName;
     }
 
-    private void installationRecyclerView(RecyclerView recyclerView, LinearSnapHelper snapHelper,
-                                          RecyclerView.LayoutManager layoutManager, TimeSelectAdapter adapter,
-                                          RecyclerView.OnScrollListener scrollListener, int position) {
-
-        snapHelper.attachToRecyclerView(recyclerView);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(scrollListener);
-        recyclerView.scrollToPosition(position);
-        recyclerView.post(() -> toTargetPosition(layoutManager, snapHelper, recyclerView, position));
-    }
-
     private void loadInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             hoursPosition = savedInstanceState.getInt("hours");
@@ -165,16 +175,6 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         outState.putInt("hours", hoursLayoutManager.getPosition(hoursLastTextView));
         outState.putInt("minutes", minutesLayoutManager.getPosition(minutesLastTextView));
         super.onSaveInstanceState(outState);
-    }
-
-    private void toTargetPosition(RecyclerView.LayoutManager LayoutManager, LinearSnapHelper snap, RecyclerView recyclerView, int position) {
-        View view = LayoutManager.findViewByPosition(position);
-        if (view != null) {
-            int[] snapDistance = snap.calculateDistanceToFinalSnap(LayoutManager, view);
-            if (snapDistance[0] != 0 || snapDistance[1] != 0) {
-                recyclerView.scrollBy(snapDistance[0], snapDistance[1]);
-            }
-        }
     }
 
     RecyclerView.OnScrollListener recyclerViewScrollListenerHours = new RecyclerView.OnScrollListener() {
