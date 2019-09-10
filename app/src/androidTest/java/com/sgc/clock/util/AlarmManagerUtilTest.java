@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class AlarmManagerUtilTest extends AndroidTestCase {
     AlarmClock alarmClock;
 

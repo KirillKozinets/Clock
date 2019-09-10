@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class AlarmClockDatabaseTest extends AndroidTestCase {
 
     private AlarmClockDatabase dataBase;
