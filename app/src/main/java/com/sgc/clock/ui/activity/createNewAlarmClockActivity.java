@@ -25,6 +25,7 @@ import com.sgc.clock.util.AlarmManagerUtil;
 import com.sgc.clock.util.ParcelableUtil;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -169,13 +170,10 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     private void toTargetPosition(RecyclerView.LayoutManager LayoutManager, LinearSnapHelper snap, RecyclerView recyclerView, int position) {
         View view = LayoutManager.findViewByPosition(position);
         if (view != null) {
-
             int[] snapDistance = snap.calculateDistanceToFinalSnap(LayoutManager, view);
-
             if (snapDistance[0] != 0 || snapDistance[1] != 0) {
                 recyclerView.scrollBy(snapDistance[0], snapDistance[1]);
             }
-
         }
     }
 
@@ -210,7 +208,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     @OnClick(R.id.addAlarmClock)
     public void addNewAlarmClock() {
         String hours = hoursLastTextView.getText().toString();
-        String minutes = String.format("%02d", Integer.parseInt(minutesLastTextView.getText().toString()));
+        String minutes = convertNumberToTwoNumbersFormat(minutesLastTextView.getText().toString());
         String alarmTime = hours + " : " + minutes;
 
         AlarmClock alarmClock = new AlarmClock(alarmClockDescription, alarmTime, "Без повторов", true);
@@ -222,8 +220,11 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         setResult(RESULT_OK, intent);
 
         onBackPressed();
-    } 
+    }
 
+    private String convertNumberToTwoNumbersFormat(String number){
+        return String.format(Locale.getDefault(),"%02d", Integer.parseInt(number));
+    }
 
     @OnClick(R.id.cancel)
     public void backToClockActivity() {
