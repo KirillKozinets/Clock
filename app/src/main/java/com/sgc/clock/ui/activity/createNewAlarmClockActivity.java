@@ -217,14 +217,12 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         if (isChangeAlarmClock)
             alarmClock.set_id(alarmClockChangeId);
 
-        byte[] alarmClockByteArray = ParcelableUtil.marshall(alarmClock);
-
         Intent intent = new Intent(this, clockActivity.class);
-        intent.putExtra("alarmClock", alarmClockByteArray);
+        intent.putExtra("alarmClock", alarmClock);
         setResult(RESULT_OK, intent);
 
         onBackPressed();
-    }
+    } 
 
 
     @OnClick(R.id.cancel)

@@ -45,7 +45,7 @@ public class clockActivity extends AppCompatActivity {
         AlarmClock alarmClock = null;
 
         if (data != null)
-            alarmClock = convertByteArrayToAlarmClock(data.getByteArrayExtra("alarmClock"));
+            alarmClock = data.getParcelableExtra("alarmClock");
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
