@@ -2,7 +2,6 @@ package com.sgc.clock.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import com.sgc.clock.adapter.viewPagerAdapter;
 import com.sgc.clock.db.AlarmClockDataBaseHelper;
 import com.sgc.clock.model.AlarmClock;
 import com.sgc.clock.util.AlarmManagerUtil;
-import com.sgc.clock.util.ParcelableUtil;
 import com.sgc.clock.util.PowerSaverIntentUtil;
 
 import butterknife.BindView;
@@ -59,7 +57,7 @@ public class clockActivity extends AppCompatActivity {
                     alarmClockId = AlarmClockDataBaseHelper.getInstance(getApplicationContext()).addAlarmClockToDataBase(alarmClock);
                     break;
             }
-            AlarmManagerUtil.setAlarm(alarmClockId, getApplicationContext());
+            AlarmManagerUtil.startAlarm(alarmClockId, getApplicationContext());
          }
     }
 

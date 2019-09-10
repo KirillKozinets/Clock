@@ -1,11 +1,9 @@
 package com.sgc.clock.receiver;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.AppLaunchChecker;
 
 import com.sgc.clock.model.AlarmClock;
 import com.sgc.clock.service.OrderReminderNotificationService;
@@ -33,12 +31,12 @@ public class AlarmClockReceiver extends BroadcastReceiver {
         //when rebooting the device alarm cancel
         //so need to set the alarm again
         if (checkReboot(intent))
-            AlarmManagerUtil.setAlarm(alarmClock, context);
+            AlarmManagerUtil.startAlarm(alarmClock, context);
 
         //when changing time need reset alarm
         if (checkTimeChanged(intent)) {
             AlarmManagerUtil.cancel(alarmClock, context);
-            AlarmManagerUtil.setAlarm(alarmClock, context);
+            AlarmManagerUtil.startAlarm(alarmClock, context);
         }
 
         // start service for work the alarm

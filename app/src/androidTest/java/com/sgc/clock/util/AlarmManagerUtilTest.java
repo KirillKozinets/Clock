@@ -38,7 +38,7 @@ public class AlarmManagerUtilTest extends AndroidTestCase {
 
     @Test
     public void testSetAlarm() {
-        Date alarmTime = AlarmManagerUtil.setAlarm(alarmClock, getContext(),testCalendar.getTime());
+        Date alarmTime = AlarmManagerUtil.startAlarm(alarmClock, getContext(),testCalendar.getTime());
         AlarmManagerUtil.cancel(alarmClock, getContext());
 
         Calendar calendar = new GregorianCalendar();
@@ -53,7 +53,7 @@ public class AlarmManagerUtilTest extends AndroidTestCase {
     public void testNextDaySetAlarm() {
         testCalendar.set(Calendar.HOUR_OF_DAY,16);
 
-        Date alarmTime = AlarmManagerUtil.setAlarm(alarmClock, getContext(),testCalendar.getTime());
+        Date alarmTime = AlarmManagerUtil.startAlarm(alarmClock, getContext(),testCalendar.getTime());
         AlarmManagerUtil.cancel(alarmClock, getContext());
 
         Calendar calendar = new GregorianCalendar();

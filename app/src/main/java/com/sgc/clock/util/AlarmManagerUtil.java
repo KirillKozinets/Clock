@@ -25,50 +25,52 @@ public class AlarmManagerUtil {
         alarmManager.cancel(pendingIntent);
     }
 
-    public static Date setAlarm(AlarmClock alarm, Context context) {
-        Calendar currentCalendar = new GregorianCalendar();
-        currentCalendar.setTime(new Date(System.currentTimeMillis()));
+    public static Date startAlarm(AlarmClock alarm, Context context) {
+        Date startTimeAlarm = getStartTimeAlarm(alarm, new Date(System.currentTimeMillis()));
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, alarm.getHorse());
-        calendar.set(Calendar.MINUTE, alarm.getMinutes());
-
-        toNextDay(calendar, currentCalendar, alarm);
-
-        Intent myIntent = new Intent(context, AlarmClockReceiver.class);
-        myIntent.putExtra("alarmClock", ParcelableUtil.marshall(alarm));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarm.get_id(), myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Date startAlarmClockTime = calendar.getTime();
+        PendingIntent alarmBroadcastPendingIntent = getAlarmBroadcastPendingIntent(context,alarm);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        setAlarm(alarmManager, pendingIntent, startAlarmClockTime);
-        return startAlarmClockTime;
+        startAlarm(alarmManager, alarmBroadcastPendingIntent, startTimeAlarm);
+        return startTimeAlarm;
     }
 
-    public static Date setAlarm(AlarmClock alarm, Context context,Date currentDate) {
+    public static Date startAlarm(AlarmClock alarm, Context context, Date currentDate) {
+        Date startTimeAlarm = getStartTimeAlarm(alarm, currentDate);
+
+        PendingIntent alarmBroadcastPendingIntent = getAlarmBroadcastPendingIntent(context,alarm);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        startAlarm(alarmManager, alarmBroadcastPendingIntent, startTimeAlarm);
+        return startTimeAlarm;
+    }
+
+    private static Date getStartTimeAlarm(AlarmClock alarm, Date currentDate) {
         Calendar currentCalendar = new GregorianCalendar();
         currentCalendar.setTime(currentDate);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, alarm.getHorse());
-        calendar.set(Calendar.MINUTE, alarm.getMinutes());
+        Calendar startAlarmCalendar = Calendar.getInstance();
+        startAlarmCalendar.setTimeInMillis(System.currentTimeMillis());
+        startAlarmCalendar.set(Calendar.HOUR_OF_DAY, alarm.getHorse());
+        startAlarmCalendar.set(Calendar.MINUTE, alarm.getMinutes());
 
-        toNextDay(calendar, currentCalendar, alarm);
+        toNextDay(startAlarmCalendar, currentCalendar, alarm);
 
-        Intent myIntent = new Intent(context, AlarmClockReceiver.class);
-        myIntent.putExtra("alarmClock", ParcelableUtil.marshall(alarm));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarm.get_id(), myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Date startAlarmClockTime = calendar.getTime();
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        setAlarm(alarmManager, pendingIntent, startAlarmClockTime);
-        return startAlarmClockTime;
+        return startAlarmCalendar.getTime();
     }
 
+    private static PendingIntent getAlarmBroadcastPendingIntent(Context context,AlarmClock alarm) {
+        Intent alarmClockReceiver = getAlarmClockReceiverIntent(context,alarm);
+        return PendingIntent.getBroadcast(context, alarm.get_id(), alarmClockReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
-    public static Date setAlarm(long alarmId, Context context) {
+    private static Intent getAlarmClockReceiverIntent(Context context, AlarmClock alarm) {
+        Intent alarmClockReceiver = new Intent(context, AlarmClockReceiver.class);
+        alarmClockReceiver.putExtra("alarmClock", ParcelableUtil.marshall(alarm));
+        return alarmClockReceiver;
+    }
+
+    public static Date startAlarm(long alarmId, Context context) {
         AlarmClock alarmClock = AlarmClockDataBaseHelper.getInstance(context).getAlarmClock(alarmId);
-        return  setAlarm(alarmClock,context);
+        return startAlarm(alarmClock, context);
     }
 
     private static void toNextDay(Calendar calendar, Calendar currentCalendar, AlarmClock alarm) {
@@ -81,7 +83,7 @@ public class AlarmManagerUtil {
         }
     }
 
-    private static void setAlarm(AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
+    private static void startAlarm(AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, currentDate.getTime(), pendingIntent);
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)

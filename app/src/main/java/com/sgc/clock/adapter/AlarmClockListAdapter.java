@@ -59,7 +59,7 @@ public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAd
             if (alarmClockItem.getActive() != b) {
                 alarmClockItem.setActive(b);
                 AlarmClockDataBaseHelper.getInstance(inflater.getContext()).updateAlarmClockToDataBase(alarmClockItem);
-                AlarmManagerUtil.setAlarm(alarmClockItem, inflater.getContext());
+                AlarmManagerUtil.startAlarm(alarmClockItem, inflater.getContext());
             }
         });
 
