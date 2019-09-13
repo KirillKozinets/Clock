@@ -1,4 +1,4 @@
-package com.sgc.clock.db;
+package androiidTest.db;
 
 import org.junit.After;
 import org.junit.Before;
@@ -10,10 +10,14 @@ import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.AndroidTestCase;
 
+import com.sgc.clock.db.AlarmClockDao;
+import com.sgc.clock.db.AlarmClockDatabase;
 import com.sgc.clock.model.AlarmClock;
 import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import static android.support.test.InstrumentationRegistry.getTargetContext;
 
 @RunWith(AndroidJUnit4.class)
 public class AlarmClockDatabaseTest extends AndroidTestCase {
@@ -23,7 +27,7 @@ public class AlarmClockDatabaseTest extends AndroidTestCase {
 
     @Before
     public void setUp() {
-        dataBase = Room.databaseBuilder(mContext,
+        dataBase = Room.databaseBuilder(getTargetContext(),
                 AlarmClockDatabase.class, "alarmClock")
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()

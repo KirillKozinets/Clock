@@ -11,7 +11,6 @@ import android.support.multidex.BuildConfig;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.support.test.InstrumentationRegistry.getContext;
 
 public class Constants {
     static final List<Intent> POWERMANAGER_INTENTS = Arrays.asList(

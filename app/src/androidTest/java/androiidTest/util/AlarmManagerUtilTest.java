@@ -1,10 +1,9 @@
-package com.sgc.clock.util;
+package androiidTest.util;
 
-import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.AndroidTestCase;
 
 import com.sgc.clock.model.AlarmClock;
+import com.sgc.clock.util.AlarmManagerUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +13,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import static android.support.test.InstrumentationRegistry.getContext;
+import static android.support.test.InstrumentationRegistry.getTargetContext;
+import static org.junit.Assert.assertEquals;
+
 @RunWith(AndroidJUnit4.class)
-public class AlarmManagerUtilTest extends AndroidTestCase {
+public class AlarmManagerUtilTest  {
     AlarmClock alarmClock;
 
     String testTime = "15 : 45";
@@ -37,8 +40,8 @@ public class AlarmManagerUtilTest extends AndroidTestCase {
 
     @Test
     public void testSetAlarm() {
-        Date alarmTime = AlarmManagerUtil.startAlarm(alarmClock, getContext(),testCalendar.getTime());
-        AlarmManagerUtil.cancel(alarmClock, getContext());
+        Date alarmTime = AlarmManagerUtil.startAlarm(alarmClock, getTargetContext(),testCalendar.getTime());
+        AlarmManagerUtil.cancel(alarmClock, getTargetContext());
 
         Calendar calendar = new GregorianCalendar();
         calendar.setTimeInMillis(alarmTime.getTime());
@@ -52,8 +55,8 @@ public class AlarmManagerUtilTest extends AndroidTestCase {
     public void testNextDaySetAlarm() {
         testCalendar.set(Calendar.HOUR_OF_DAY,16);
 
-        Date alarmTime = AlarmManagerUtil.startAlarm(alarmClock, getContext(),testCalendar.getTime());
-        AlarmManagerUtil.cancel(alarmClock, getContext());
+        Date alarmTime = AlarmManagerUtil.startAlarm(alarmClock, getTargetContext(),testCalendar.getTime());
+        AlarmManagerUtil.cancel(alarmClock, getTargetContext());
 
         Calendar calendar = new GregorianCalendar();
         calendar.setTimeInMillis(alarmTime.getTime());

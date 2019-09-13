@@ -1,4 +1,4 @@
-package com.sgc.clock.model;
+package androiidTest.model;
 
 import android.content.Intent;
 import android.os.Parcel;

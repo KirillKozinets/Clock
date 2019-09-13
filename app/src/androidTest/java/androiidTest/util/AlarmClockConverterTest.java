@@ -1,10 +1,12 @@
-package com.sgc.clock.util;
+package androiidTest.util;
 
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.AndroidTestCase;
 
 import com.sgc.clock.model.AlarmClock;
+import com.sgc.clock.util.AlarmClockConverter;
+import com.sgc.clock.util.ParcelableUtil;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
