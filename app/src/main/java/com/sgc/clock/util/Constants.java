@@ -13,6 +13,10 @@ import java.util.List;
 
 
 public class Constants {
+    public static final String TAG_SEND_ALARM_CLOCK = "alarmClock";
+    public static final String TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK = "changeId";
+    public static final String TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE = "createAlarmClockActivityTitle";
+
     static final List<Intent> POWERMANAGER_INTENTS = Arrays.asList(
             new Intent().setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")),
             new Intent().setComponent(new ComponentName("com.letv.android.letvsafe", "com.letv.android.letvsafe.AutobootManageActivity")),

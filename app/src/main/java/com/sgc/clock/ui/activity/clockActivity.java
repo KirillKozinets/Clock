@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.sgc.clock.util.AlarmClockConverter.convertByteArrayToAlarmClock;
+import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
 
 public class clockActivity extends AppCompatActivity {
 
@@ -45,7 +46,7 @@ public class clockActivity extends AppCompatActivity {
         AlarmClock alarmClock = null;
 
         if (data != null)
-            alarmClock = data.getParcelableExtra("alarmClock");
+            alarmClock = data.getParcelableExtra(TAG_SEND_ALARM_CLOCK);
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {

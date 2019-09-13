@@ -26,6 +26,9 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
+import static com.sgc.clock.util.Constants.TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE;
+import static com.sgc.clock.util.Constants.TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK;
+
 public class alarmClockFragment extends Fragment implements AlarmClockListAdapter.AlarmClockClickListener {
 
 
@@ -33,8 +36,7 @@ public class alarmClockFragment extends Fragment implements AlarmClockListAdapte
     RecyclerView alarmList;
     Unbinder unbinder;
 
-    public static final String TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK = "changeId";
-    public static final String TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE = "createAlarmClockActivityTitle";
+
 
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigation;

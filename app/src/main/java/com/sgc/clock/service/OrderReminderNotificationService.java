@@ -25,6 +25,8 @@ import com.sgc.clock.util.ParcelableUtil;
 
 import java.util.ArrayList;
 
+import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
+
 
 public class OrderReminderNotificationService extends Service {
 
@@ -39,7 +41,7 @@ public class OrderReminderNotificationService extends Service {
     ArrayList<Integer> clockArrayId = new ArrayList<>();
 
     protected void playRingtone(Intent intent) {
-        byte[] alarmClockByteArray = intent.getByteArrayExtra("alarmClock");
+        byte[] alarmClockByteArray = intent.getByteArrayExtra(TAG_SEND_ALARM_CLOCK);
         alarmClock = AlarmClockConverter.convertByteArrayToAlarmClock(alarmClockByteArray);
 
         if (alarmClock.getActive()) {

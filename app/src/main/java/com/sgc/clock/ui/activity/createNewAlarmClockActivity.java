@@ -22,7 +22,6 @@ import com.sgc.clock.adapter.TimeSelectAdapter;
 import com.sgc.clock.db.AlarmClockDataBaseHelper;
 import com.sgc.clock.model.AlarmClock;
 import com.sgc.clock.util.AlarmManagerUtil;
-import com.sgc.clock.util.ParcelableUtil;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -31,8 +30,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.sgc.clock.ui.fragment.alarmClockFragment.TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE;
-import static com.sgc.clock.ui.fragment.alarmClockFragment.TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK;
+import static com.sgc.clock.util.Constants.TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE;
+import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
+import static com.sgc.clock.util.Constants.TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK;
 
 public class createNewAlarmClockActivity extends AppCompatActivity {
 
@@ -216,7 +216,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
             alarmClock.set_id(alarmClockChangeId);
 
         Intent intent = new Intent(this, clockActivity.class);
-        intent.putExtra("alarmClock", alarmClock);
+        intent.putExtra(TAG_SEND_ALARM_CLOCK, alarmClock);
         setResult(RESULT_OK, intent);
 
         onBackPressed();

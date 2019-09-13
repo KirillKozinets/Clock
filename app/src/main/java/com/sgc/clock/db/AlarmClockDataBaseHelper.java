@@ -11,6 +11,8 @@ import java.util.List;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
+import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
+
 /**
  * class for working with the alarm clock database
  */
@@ -32,7 +34,7 @@ public class AlarmClockDataBaseHelper {
     private AlarmClockDataBaseHelper(Context context) {
         if (dataBase == null || databaseHandler == null) {
             dataBase = Room.databaseBuilder(context,
-                    AlarmClockDatabase.class, "alarmClock")
+                    AlarmClockDatabase.class, TAG_SEND_ALARM_CLOCK)
                     .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
                     .build();

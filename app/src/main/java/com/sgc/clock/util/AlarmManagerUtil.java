@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static android.content.Context.ALARM_SERVICE;
+import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
 
 public class AlarmManagerUtil {
 
@@ -64,7 +65,7 @@ public class AlarmManagerUtil {
 
     private static Intent getAlarmClockReceiverIntent(Context context, AlarmClock alarm) {
         Intent alarmClockReceiver = new Intent(context, AlarmClockReceiver.class);
-        alarmClockReceiver.putExtra("alarmClock", ParcelableUtil.marshall(alarm));
+        alarmClockReceiver.putExtra(TAG_SEND_ALARM_CLOCK, ParcelableUtil.marshall(alarm));
         return alarmClockReceiver;
     }
 

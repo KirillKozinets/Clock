@@ -10,6 +10,8 @@ import com.sgc.clock.service.OrderReminderNotificationService;
 import com.sgc.clock.util.AlarmClockConverter;
 import com.sgc.clock.util.AlarmManagerUtil;
 
+import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
+
 public class AlarmClockReceiver extends BroadcastReceiver {
 
     @Override
@@ -18,10 +20,10 @@ public class AlarmClockReceiver extends BroadcastReceiver {
         Intent i = new Intent(context, OrderReminderNotificationService.class);
 
         //get alarm clock from intent
-        byte[] alarmClockByteArray = intent.getByteArrayExtra("alarmClock");
+        byte[] alarmClockByteArray = intent.getByteArrayExtra(TAG_SEND_ALARM_CLOCK);
 
         //put alarm clock to intent
-        i.putExtra("alarmClock", alarmClockByteArray);
+        i.putExtra(TAG_SEND_ALARM_CLOCK, alarmClockByteArray);
 
         //convert alarm clock in the format bite array
         // to alarm clock because you cant send Parcelable to alarmManager
