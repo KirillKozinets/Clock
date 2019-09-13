@@ -5,17 +5,19 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.activity.alarmClockFragment">
+
+    tools:context=".ui.fragment.alarmClockFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:paddingBottom="75dp"
         android:id="@+id/alarmList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="-66dp" />
+        tools:layout_editor_absoluteX="-66dp"
+        android:paddingBottom="60dp"
+        android:clipToPadding="false"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

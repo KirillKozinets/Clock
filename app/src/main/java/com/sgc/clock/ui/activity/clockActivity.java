@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 
 import com.sgc.clock.R;
 import com.sgc.clock.adapter.viewPagerAdapter;
@@ -37,6 +38,9 @@ public class clockActivity extends AppCompatActivity {
 
         pagerAdapter = new viewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
     @Override
