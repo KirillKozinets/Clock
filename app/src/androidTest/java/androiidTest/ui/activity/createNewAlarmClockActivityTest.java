@@ -8,6 +8,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.sgc.clock.R;
+import com.sgc.clock.model.AlarmClock;
 import com.sgc.clock.ui.activity.createNewAlarmClockActivity;
 import com.sgc.clock.ui.fragment.alarmClockFragment;
 
@@ -20,9 +21,14 @@ import org.junit.runner.RunWith;
 import java.util.Random;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(AndroidJUnit4.class)
 public class createNewAlarmClockActivityTest {
@@ -63,6 +69,18 @@ public class createNewAlarmClockActivityTest {
         String saltStr = salt.toString();
         return saltStr;
 
+    }
+
+    @Test
+    public void testCurrentStartTime() {
+        onView(withId(R.id.addAlarmClock)).perform(click());
+
+        Intent resultData = mActivityRule.getActivityResult().getResultData();
+        AlarmClock testAlarmClock = resultData.getParcelableExtra(TAG_SEND_ALARM_CLOCK);
+
+        assertNotNull(testAlarmClock);
+        assertEquals(testAlarmClock.getHorse(),8);
+        assertEquals(testAlarmClock.getMinutes(),0);
     }
 
 }
