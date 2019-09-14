@@ -49,10 +49,7 @@ public class AlarmClockReceiver extends BroadcastReceiver {
 
     //checks if the device has been reboot
     private boolean checkReboot(Intent intent) {
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            return true;
-        }
-        return false;
+        return Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction());
     }
 
     //checks if the time has been changed
