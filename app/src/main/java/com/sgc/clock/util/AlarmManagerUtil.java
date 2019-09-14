@@ -69,6 +69,11 @@ public class AlarmManagerUtil {
         return alarmClockReceiver;
     }
 
+    public static Date startAlarm(long alarmId, Context context) {
+        AlarmClock alarmClock = AlarmClockDataBaseHelper.getInstance(context).getAlarmClock(alarmId);
+        return startAlarm(alarmClock, context);
+    }
+
     private static void toNextDay(Calendar calendar, Calendar currentCalendar, AlarmClock alarm) {
         if (currentCalendar.get(Calendar.HOUR_OF_DAY) >= alarm.getHorse()) {
             if (currentCalendar.get(Calendar.HOUR_OF_DAY) == alarm.getHorse() && currentCalendar.get(Calendar.MINUTE) > alarm.getMinutes()) {
