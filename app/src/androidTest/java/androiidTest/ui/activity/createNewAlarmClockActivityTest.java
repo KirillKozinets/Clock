@@ -4,6 +4,7 @@ package androiidTest.ui.activity;
 import android.content.Intent;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -23,10 +24,12 @@ import java.util.Random;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.sgc.clock.util.Constants.TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE;
 import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
+import static com.sgc.clock.util.Constants.TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -82,6 +85,20 @@ public class createNewAlarmClockActivityTest {
         assertNotNull(testAlarmClock);
         assertEquals(testAlarmClock.getHorse(),8);
         assertEquals(testAlarmClock.getMinutes(),0);
+    }
+
+    @Test
+    public void testVisibleVisibilityDeleteButton() {
+        Intent testIntent = new Intent();
+        testIntent.putExtra(TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK, 0);
+        mActivityRule.launchActivity(testIntent);
+
+        onView(withId(R.id.delete)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+    }
+
+    @Test
+    public void testGoneVisibilityDeleteButton() {
+        onView(withId(R.id.delete)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
     }
 
 }
