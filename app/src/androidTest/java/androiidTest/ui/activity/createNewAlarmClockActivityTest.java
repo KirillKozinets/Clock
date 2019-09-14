@@ -61,7 +61,7 @@ public class createNewAlarmClockActivityTest {
 
     @Test
     public void testCurrentTitle() {
-        String testTitle = getSaltString();
+        String testTitle = getSaltString(6);
 
         Intent testIntent = new Intent();
         testIntent.putExtra(TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE, testTitle);
@@ -98,7 +98,7 @@ public class createNewAlarmClockActivityTest {
 
     @Test
     public void testChangeAlarmClockDescription() {
-        String testDescription = getSaltString();
+        String testDescription = getSaltString(6);
 
         onView(withId(R.id.alarmClockName)).perform(click());
         onView(withId(R.id.description)).perform(setTextInTextView(testDescription));
@@ -117,24 +117,22 @@ public class createNewAlarmClockActivityTest {
             public Matcher<View> getConstraints() {
                 return allOf(isDisplayed(), isAssignableFrom(TextView.class));
             }
-
             @Override
             public void perform(UiController uiController, View view) {
                 ((TextView) view).setText(value);
             }
-
             @Override
             public String getDescription() {
                 return "replace text";
             }
         };
     }
-    
-    private String getSaltString() {
+
+    private String getSaltString(int lenght) {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
-        while (salt.length() < 6) { // length of the random string.
+        while (salt.length() < lenght) {
             int index = (int) (rnd.nextFloat() * SALTCHARS.length());
             salt.append(SALTCHARS.charAt(index));
         }
@@ -142,6 +140,5 @@ public class createNewAlarmClockActivityTest {
         return saltStr;
 
     }
-
 
 }
