@@ -41,6 +41,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class createNewAlarmClockActivityTest {
@@ -139,6 +140,12 @@ public class createNewAlarmClockActivityTest {
         String saltStr = salt.toString();
         return saltStr;
 
+    }
+
+    @Test
+    public void testCloseActivity() {
+        onView(withId(R.id.cancel)).perform(click());
+        assertTrue(mActivityRule.getActivity().isFinishing());
     }
 
 }
