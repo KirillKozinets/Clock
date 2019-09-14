@@ -1,9 +1,5 @@
 package androiidTest.model;
 
-import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.AndroidTestCase;
 
@@ -30,15 +26,15 @@ public class AlarmClockTest extends AndroidTestCase {
 
     @Test
     public void testParseTime() {
-        int testHorse;
+        int testHours;
         int testMinutes;
-        int trueHorse = 15;
+        int trueHours = 15;
         int trueMinutes = 45;
 
-        testHorse = alarmClock.getHorse();
+        testHours = alarmClock.getHours();
         testMinutes = alarmClock.getMinutes();
 
-        assertEquals(testHorse, trueHorse);
+        assertEquals(testHours, trueHours);
         assertEquals(testMinutes, trueMinutes);
     }
 
