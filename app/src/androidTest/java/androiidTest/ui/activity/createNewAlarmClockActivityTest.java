@@ -172,4 +172,20 @@ public class createNewAlarmClockActivityTest {
         }
     }
 
+    @Test
+    public void testCorrectSetTime() {
+        int toCenterOffset = 2;
+        int hours = 2 + (int)(Math.random() * 21);
+        int minutes = 2 + (int)(Math.random() * 57);
+
+        onView(withId(R.id.hours)).perform(RecyclerViewActions.scrollToPosition(hours - toCenterOffset));
+        onView(withId(R.id.minutes)).perform(RecyclerViewActions.scrollToPosition(minutes - toCenterOffset));
+
+        onView(withId(R.id.addAlarmClock)).perform(click());
+        Intent resultData = mActivityRule.getActivityResult().getResultData();
+        AlarmClock testAlarmClock = resultData.getParcelableExtra(TAG_SEND_ALARM_CLOCK);
+
+        assertEquals(testAlarmClock.getMinutes(), minutes);
+        assertEquals(testAlarmClock.getHours(), hours);
+    }
 }
