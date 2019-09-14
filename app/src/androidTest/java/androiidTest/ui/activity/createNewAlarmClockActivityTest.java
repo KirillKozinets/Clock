@@ -4,8 +4,8 @@ package androiidTest.ui.activity;
 import android.content.Intent;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.Intents;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.sgc.clock.R;
 import com.sgc.clock.model.AlarmClock;
 import com.sgc.clock.ui.activity.createNewAlarmClockActivity;
-import com.sgc.clock.ui.fragment.alarmClockFragment;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -34,6 +33,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androiidTest.testUtil.TestUtils.withRecyclerView;
 import static com.sgc.clock.util.Constants.TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE;
 import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
 import static com.sgc.clock.util.Constants.TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK;
@@ -79,7 +79,7 @@ public class createNewAlarmClockActivityTest {
         AlarmClock testAlarmClock = resultData.getParcelableExtra(TAG_SEND_ALARM_CLOCK);
 
         assertNotNull(testAlarmClock);
-        assertEquals(testAlarmClock.getHorse(), 8);
+        assertEquals(testAlarmClock.getHours(), 8);
         assertEquals(testAlarmClock.getMinutes(), 0);
     }
 
@@ -118,10 +118,12 @@ public class createNewAlarmClockActivityTest {
             public Matcher<View> getConstraints() {
                 return allOf(isDisplayed(), isAssignableFrom(TextView.class));
             }
+
             @Override
             public void perform(UiController uiController, View view) {
                 ((TextView) view).setText(value);
             }
+
             @Override
             public String getDescription() {
                 return "replace text";
@@ -146,6 +148,28 @@ public class createNewAlarmClockActivityTest {
     public void testCloseActivity() {
         onView(withId(R.id.cancel)).perform(click());
         assertTrue(mActivityRule.getActivity().isFinishing());
+    }
+
+    @Test
+    public void testCorrectShowListMinutes() {
+        for (int i = 0; i < 75; i++) {
+            int number = i % 60;
+            String padded = String.format("%02d", number);
+            onView(withId(R.id.minutes)).perform(RecyclerViewActions.scrollToPosition(number));
+            onView(withRecyclerView(R.id.minutes)
+                    .atPositionOnView(number, R.id.textTime))
+                    .check(matches(withText(padded)));
+        }
+    }
+    @Test
+    public void testCorrectShowListHours() {
+        for (int position = 0; position < 30; position++) {
+            int hours = position % 24;
+            onView(withId(R.id.hours)).perform(RecyclerViewActions.scrollToPosition(hours));
+            onView(withRecyclerView(R.id.hours)
+                    .atPositionOnView(hours, R.id.textTime))
+                    .check(matches(withText(Integer.toString(hours))));
+        }
     }
 
 }
