@@ -134,9 +134,10 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     private void showAlarmClockFromIntent(int id) {
         AlarmClockDataBaseHelper alarmClockDataBaseHelper = AlarmClockDataBaseHelper.getInstance(getApplicationContext());
         AlarmClock alarmClock = alarmClockDataBaseHelper.getAlarmClock(id);
-
-        showAlarmClockTimeFromIntent(alarmClock);
-        showAlarmClockDescription(alarmClock);
+        if (alarmClock != null) {
+            showAlarmClockTimeFromIntent(alarmClock);
+            showAlarmClockDescription(alarmClock);
+        }
     }
 
     private void showAlarmClockTimeFromIntent(AlarmClock alarmClock) {
@@ -222,8 +223,8 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         onBackPressed();
     }
 
-    private String convertNumberToTwoNumbersFormat(String number){
-        return String.format(Locale.getDefault(),"%02d", Integer.parseInt(number));
+    private String convertNumberToTwoNumbersFormat(String number) {
+        return String.format(Locale.getDefault(), "%02d", Integer.parseInt(number));
     }
 
     @OnClick(R.id.cancel)
