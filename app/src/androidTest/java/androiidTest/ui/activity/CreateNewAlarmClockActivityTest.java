@@ -40,14 +40,13 @@ import static com.sgc.clock.util.Constants.TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class CreateNewAlarmClockActivityTest {
 
     @Rule
-    public ActivityTestRule<createNewAlarmClockActivity> mActivityRule =
+    public ActivityTestRule<createNewAlarmClockActivity> activityRule =
             new ActivityTestRule<>(createNewAlarmClockActivity.class);
 
     @Before
@@ -66,7 +65,7 @@ public class CreateNewAlarmClockActivityTest {
 
         Intent testIntent = new Intent();
         testIntent.putExtra(TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE, testTitle);
-        mActivityRule.launchActivity(testIntent);
+        activityRule.launchActivity(testIntent);
 
         onView(withId(R.id.title)).check(matches(withText(testTitle)));
     }
@@ -75,8 +74,7 @@ public class CreateNewAlarmClockActivityTest {
     public void testCurrentStartTime() {
         onView(withId(R.id.addAlarmClock)).perform(click());
 
-        Intent resultData = mActivityRule.getActivityResult().getResultData();
-        AlarmClock testAlarmClock = resultData.getParcelableExtra(TAG_SEND_ALARM_CLOCK);
+        AlarmClock testAlarmClock = getALarmClockFromActivityResult();
 
         assertNotNull(testAlarmClock);
         assertEquals(testAlarmClock.getHours(), 8);
@@ -87,7 +85,7 @@ public class CreateNewAlarmClockActivityTest {
     public void testVisibleVisibilityDeleteButton() {
         Intent testIntent = new Intent();
         testIntent.putExtra(TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK, 0);
-        mActivityRule.launchActivity(testIntent);
+        activityRule.launchActivity(testIntent);
 
         onView(withId(R.id.delete)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
@@ -106,8 +104,7 @@ public class CreateNewAlarmClockActivityTest {
         onView(withId(R.id.OK)).perform(click());
         onView(withId(R.id.addAlarmClock)).perform(click());
 
-        Intent resultData = mActivityRule.getActivityResult().getResultData();
-        AlarmClock testAlarmClock = resultData.getParcelableExtra(TAG_SEND_ALARM_CLOCK);
+        AlarmClock testAlarmClock = getALarmClockFromActivityResult();
 
         assertEquals(testAlarmClock.getAlarmClockName(), testDescription);
     }
@@ -147,7 +144,7 @@ public class CreateNewAlarmClockActivityTest {
     @Test
     public void testCloseActivity() {
         onView(withId(R.id.cancel)).perform(click());
-        assertTrue(mActivityRule.getActivity().isFinishing());
+        assertTrue(activityRule.getActivity().isFinishing());
     }
 
     @Test
@@ -161,6 +158,7 @@ public class CreateNewAlarmClockActivityTest {
                     .check(matches(withText(padded)));
         }
     }
+
     @Test
     public void testCorrectShowListHours() {
         for (int position = 0; position < 30; position++) {
@@ -175,17 +173,21 @@ public class CreateNewAlarmClockActivityTest {
     @Test
     public void testCorrectSetTime() {
         int toCenterOffset = 2;
-        int hours = 2 + (int)(Math.random() * 21);
-        int minutes = 2 + (int)(Math.random() * 57);
+        int hours = 2 + (int) (Math.random() * 21);
+        int minutes = 2 + (int) (Math.random() * 57);
 
         onView(withId(R.id.hours)).perform(RecyclerViewActions.scrollToPosition(hours - toCenterOffset));
         onView(withId(R.id.minutes)).perform(RecyclerViewActions.scrollToPosition(minutes - toCenterOffset));
-
         onView(withId(R.id.addAlarmClock)).perform(click());
-        Intent resultData = mActivityRule.getActivityResult().getResultData();
-        AlarmClock testAlarmClock = resultData.getParcelableExtra(TAG_SEND_ALARM_CLOCK);
+
+        AlarmClock testAlarmClock = getALarmClockFromActivityResult();
 
         assertEquals(testAlarmClock.getMinutes(), minutes);
         assertEquals(testAlarmClock.getHours(), hours);
+    }
+
+    private AlarmClock getALarmClockFromActivityResult() {
+        Intent resultData = activityRule.getActivityResult().getResultData();
+        return resultData.getParcelableExtra(TAG_SEND_ALARM_CLOCK);
     }
 }
