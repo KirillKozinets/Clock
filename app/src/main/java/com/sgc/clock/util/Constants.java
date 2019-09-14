@@ -13,6 +13,8 @@ import java.util.List;
 
 
 public class Constants {
+    public static final boolean isDebug = true;
+
     public static final String TAG_SEND_ALARM_CLOCK = "alarmClock";
     public static final String TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK = "changeId";
     public static final String TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE = "createAlarmClockActivityTitle";

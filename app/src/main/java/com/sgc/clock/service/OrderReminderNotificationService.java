@@ -21,11 +21,13 @@ import com.sgc.clock.R;
 import com.sgc.clock.db.AlarmClockDataBaseHelper;
 import com.sgc.clock.model.AlarmClock;
 import com.sgc.clock.util.AlarmClockConverter;
+import com.sgc.clock.util.Constants;
 import com.sgc.clock.util.ParcelableUtil;
 
 import java.util.ArrayList;
 
 import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
+import static com.sgc.clock.util.Constants.isDebug;
 
 
 public class OrderReminderNotificationService extends Service {
@@ -46,7 +48,11 @@ public class OrderReminderNotificationService extends Service {
 
         if (alarmClock.getActive()) {
             alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            startPlayer();
+
+            // not start music player when app work in debug mode
+            if (!Constants.isDebug)
+                startPlayer();
+
             sendNotification();
         }
     }
