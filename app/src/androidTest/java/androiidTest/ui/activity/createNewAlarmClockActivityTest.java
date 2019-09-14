@@ -25,6 +25,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.sgc.clock.util.Constants.TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE;
 import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -52,7 +53,7 @@ public class createNewAlarmClockActivityTest {
         String testTitle = getSaltString();
 
         Intent testIntent = new Intent();
-        testIntent.putExtra(alarmClockFragment.TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE, testTitle);
+        testIntent.putExtra(TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE, testTitle);
         mActivityRule.launchActivity(testIntent);
 
         onView(withId(R.id.title)).check(matches(withText(testTitle)));
