@@ -50,7 +50,7 @@ public class AlarmManagerUtil {
 
         Calendar startAlarmCalendar = Calendar.getInstance();
         startAlarmCalendar.setTimeInMillis(System.currentTimeMillis());
-        startAlarmCalendar.set(Calendar.HOUR_OF_DAY, alarm.getHorse());
+        startAlarmCalendar.set(Calendar.HOUR_OF_DAY, alarm.getHours());
         startAlarmCalendar.set(Calendar.MINUTE, alarm.getMinutes());
 
         toNextDay(startAlarmCalendar, currentCalendar, alarm);
@@ -75,10 +75,10 @@ public class AlarmManagerUtil {
     }
 
     private static void toNextDay(Calendar calendar, Calendar currentCalendar, AlarmClock alarm) {
-        if (currentCalendar.get(Calendar.HOUR_OF_DAY) >= alarm.getHorse()) {
-            if (currentCalendar.get(Calendar.HOUR_OF_DAY) == alarm.getHorse() && currentCalendar.get(Calendar.MINUTE) > alarm.getMinutes()) {
+        if (currentCalendar.get(Calendar.HOUR_OF_DAY) >= alarm.getHours()) {
+            if (currentCalendar.get(Calendar.HOUR_OF_DAY) == alarm.getHours() && currentCalendar.get(Calendar.MINUTE) > alarm.getMinutes()) {
                 calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1);
-            } else if (currentCalendar.get(Calendar.HOUR_OF_DAY) > alarm.getHorse()) {
+            } else if (currentCalendar.get(Calendar.HOUR_OF_DAY) > alarm.getHours()) {
                 calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1);
             }
         }
