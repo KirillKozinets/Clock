@@ -149,10 +149,10 @@ public class AlarmClock implements Parcelable {
         return isEquals;
     }
 
-    public int getHorse(){
-        String horseStr = alarmClockTime.split(" : ")[0];
-        int horse = Integer.parseInt(horseStr);
-        return horse;
+    public int getHours(){
+        String hoursStr = alarmClockTime.split(" : ")[0];
+        int hours = Integer.parseInt(hoursStr);
+        return hours;
     }
 
     public int getMinutes(){
