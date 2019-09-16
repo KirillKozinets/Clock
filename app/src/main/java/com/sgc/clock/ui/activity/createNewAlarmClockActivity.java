@@ -3,6 +3,7 @@ package com.sgc.clock.ui.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -243,6 +244,8 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         Button cancel = promptsView.findViewById(R.id.cancel);
 
         AlertDialog alertDialog = createChangeDescriptionAlertDialog(promptsView);
+        alertDialog.getWindow().setBackgroundDrawableResource(
+                R.drawable.oval_button);
         alertDialog.show();
 
         ok.setOnClickListener(view -> changeAlarmClockDescription(description, alertDialog));
