@@ -243,13 +243,13 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         Button ok = promptsView.findViewById(R.id.OK);
         Button cancel = promptsView.findViewById(R.id.cancel);
 
-        AlertDialog alertDialog = createChangeDescriptionAlertDialog(promptsView);
-        alertDialog.getWindow().setBackgroundDrawableResource(
+        AlertDialog descriptionAlertDialog = createChangeDescriptionAlertDialog(promptsView);
+        descriptionAlertDialog.getWindow().setBackgroundDrawableResource(
                 R.drawable.oval_button);
-        alertDialog.show();
+        descriptionAlertDialog.show();
 
-        ok.setOnClickListener(view -> changeAlarmClockDescription(description, alertDialog));
-        cancel.setOnClickListener(view -> alertDialog.cancel());
+        ok.setOnClickListener(view -> changeAlarmClockDescription(description, descriptionAlertDialog));
+        cancel.setOnClickListener(view -> descriptionAlertDialog.cancel());
         description.setText(alarmClockDescription);
     }
 
