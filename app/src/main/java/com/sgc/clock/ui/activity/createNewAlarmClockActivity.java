@@ -3,7 +3,6 @@ package com.sgc.clock.ui.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -237,7 +236,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     @OnClick(R.id.alarmClockName)
     public void setAlarmClockName() {
         LayoutInflater li = LayoutInflater.from(this);
-        View promptsView = li.inflate(R.layout.getalarmclockname, null);
+        View promptsView = li.inflate(R.layout.get_alarm_clock_name_alert_dialog, null);
 
         EditText description = promptsView.findViewById(R.id.description);
         Button ok = promptsView.findViewById(R.id.OK);
