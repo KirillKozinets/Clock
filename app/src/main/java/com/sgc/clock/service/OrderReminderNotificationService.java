@@ -130,17 +130,24 @@ public class OrderReminderNotificationService extends Service {
                     int alarmId = clockArrayId.get(i);
                     AlarmClock alarm = AlarmClockDataBaseHelper.getInstance(getApplicationContext()).getAlarmClock(alarmId);
                     notificationManager.cancel(alarmId);
-                    alarm.setActive(false);
+                    disableAlarmClock(alarm);
                     AlarmClockDataBaseHelper.getInstance(getApplicationContext()).updateAlarmClockToDataBase(alarm);
                 }
 
                 clockArrayId.removeAll(clockArrayId);
-                player.pause();
+                if (!Constants.isDebug)
+                    player.pause();
             }
         };
         this.onDestroy();
         IntentFilter filter = new IntentFilter(BROADCAST_ACTION);
         registerReceiver(br, filter);
+    }
+
+    private void disableAlarmClock(AlarmClock alarm) {
+        if (alarm.getAlarmClockDaysOfWeek().equals(AlarmClock.DaysOfWeek.NOREPEAT.getCode())) {
+            alarm.setActive(false);
+        }
     }
 
     @Override

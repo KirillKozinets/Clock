@@ -29,18 +29,18 @@ public class AlarmManagerUtil {
     public static Date startAlarm(AlarmClock alarm, Context context) {
         Date startTimeAlarm = getStartTimeAlarm(alarm, new Date(System.currentTimeMillis()));
 
-        PendingIntent alarmBroadcastPendingIntent = getAlarmBroadcastPendingIntent(context,alarm);
+        PendingIntent alarmBroadcastPendingIntent = getAlarmBroadcastPendingIntent(context, alarm);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        startAlarm(alarmManager, alarmBroadcastPendingIntent, startTimeAlarm);
+        startAlarm(alarm, alarmManager, alarmBroadcastPendingIntent, startTimeAlarm);
         return startTimeAlarm;
     }
 
     public static Date startAlarm(AlarmClock alarm, Context context, Date currentDate) {
         Date startTimeAlarm = getStartTimeAlarm(alarm, currentDate);
 
-        PendingIntent alarmBroadcastPendingIntent = getAlarmBroadcastPendingIntent(context,alarm);
+        PendingIntent alarmBroadcastPendingIntent = getAlarmBroadcastPendingIntent(context, alarm);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        startAlarm(alarmManager, alarmBroadcastPendingIntent, startTimeAlarm);
+        startAlarm(alarm, alarmManager, alarmBroadcastPendingIntent, startTimeAlarm);
         return startTimeAlarm;
     }
 
@@ -58,8 +58,8 @@ public class AlarmManagerUtil {
         return startAlarmCalendar.getTime();
     }
 
-    private static PendingIntent getAlarmBroadcastPendingIntent(Context context,AlarmClock alarm) {
-        Intent alarmClockReceiver = getAlarmClockReceiverIntent(context,alarm);
+    private static PendingIntent getAlarmBroadcastPendingIntent(Context context, AlarmClock alarm) {
+        Intent alarmClockReceiver = getAlarmClockReceiverIntent(context, alarm);
         return PendingIntent.getBroadcast(context, alarm.get_id(), alarmClockReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -84,7 +84,14 @@ public class AlarmManagerUtil {
         }
     }
 
-    private static void startAlarm(AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
+    private static void startAlarm(AlarmClock alarmClock, AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
+        if (alarmClock.getAlarmClockDaysOfWeek().equals(AlarmClock.DaysOfWeek.NOREPEAT.getCode())) {
+            starSingleAlarm(alarmManager, pendingIntent, currentDate);
+        } else
+            startRepeatAlarm(alarmManager, pendingIntent, currentDate);
+    }
+
+    private static void starSingleAlarm(AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, currentDate.getTime(), pendingIntent);
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -93,4 +100,7 @@ public class AlarmManagerUtil {
             alarmManager.set(AlarmManager.RTC_WAKEUP, currentDate.getTime(), pendingIntent);
     }
 
+    private static void startRepeatAlarm(AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTime(), 24 * 60 * 60 * 1000, pendingIntent);
+    }
 }
