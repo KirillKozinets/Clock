@@ -26,19 +26,18 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <RadioButton
+            android:id="@+id/edery_day"
+            android:textColor="@color/blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Пн - Вс"/>
+
+        <RadioButton
             android:id="@+id/no_repeat"
             android:textColor="@color/blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Без повторов"/>
-
-        <RadioButton
-            android:id="@+id/edery_day"
-            android:textColor="@color/blue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Каждый день"/>
-
     </RadioGroup>
 
     <TextView
