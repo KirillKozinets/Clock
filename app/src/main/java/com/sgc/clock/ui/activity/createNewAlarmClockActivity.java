@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.sgc.clock.R;
@@ -52,6 +54,8 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     TextView mainTitle;
     @BindView(R.id.delete)
     Button delete;
+    @BindView(R.id.dayOfWeek)
+    TextView dayOfWeek;
 
     private TextView hoursLastTextView;
     private TextView minutesLastTextView;
@@ -67,6 +71,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     private int minutesPosition = 2400;
 
     private String alarmClockDescription = "Будильник";
+    private String alarmClockDaysOfWeek = "Без повторов";
     private boolean isChangeAlarmClock = false;
     private int alarmClockChangeId;
 
@@ -137,6 +142,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         if (alarmClock != null) {
             showAlarmClockTimeFromIntent(alarmClock);
             showAlarmClockDescription(alarmClock);
+            showAlarmClockDaysOfWeek(alarmClock);
         }
     }
 
@@ -161,17 +167,27 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         alarmClockDescription = alarmClockName;
     }
 
+    private void showAlarmClockDaysOfWeek(AlarmClock alarmClock) {
+        String alarmClockDayOfWeek = alarmClock.getAlarmClockDaysOfWeek();
+        this.dayOfWeek.setText(alarmClockDayOfWeek);
+        this.alarmClockDaysOfWeek = alarmClockDayOfWeek;
+    }
+
+
     private void loadInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             hoursPosition = savedInstanceState.getInt("hours");
             minutesPosition = savedInstanceState.getInt("minutes");
             alarmClockDescription = savedInstanceState.getString("description");
+            alarmClockDaysOfWeek = savedInstanceState.getString("daysOfWeek");
             alarmClockName.setText(alarmClockDescription);
+            dayOfWeek.setText(alarmClockDaysOfWeek);
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("daysOfWeek", dayOfWeek.getText().toString());
         outState.putString("description", alarmClockName.getText().toString());
         outState.putInt("hours", hoursLayoutManager.getPosition(hoursLastTextView));
         outState.putInt("minutes", minutesLayoutManager.getPosition(minutesLastTextView));
@@ -212,7 +228,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         String minutes = convertNumberToTwoNumbersFormat(minutesLastTextView.getText().toString());
         String alarmTime = hours + " : " + minutes;
 
-        AlarmClock alarmClock = new AlarmClock(alarmClockDescription, alarmTime, "Без повторов", true);
+        AlarmClock alarmClock = new AlarmClock(alarmClockDescription, alarmTime, alarmClockDaysOfWeek, true);
         if (isChangeAlarmClock)
             alarmClock.set_id(alarmClockChangeId);
 
@@ -242,7 +258,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         Button ok = promptsView.findViewById(R.id.OK);
         Button cancel = promptsView.findViewById(R.id.cancel);
 
-        AlertDialog descriptionAlertDialog = createChangeDescriptionAlertDialog(promptsView);
+        AlertDialog descriptionAlertDialog = createAlertDialog(promptsView);
         descriptionAlertDialog.getWindow().setBackgroundDrawableResource(
                 R.drawable.oval_button);
         descriptionAlertDialog.show();
@@ -252,13 +268,43 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         description.setText(alarmClockDescription);
     }
 
+    @OnClick(R.id.alarmClockDaysOfWeek)
+    public void setAlarmClockDaysOfWeeke() {
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.get_days_of_the_week_alert_dialog, null);
+
+        Button cancel = promptsView.findViewById(R.id.cancel);
+        RadioGroup radioGroupDayOfWeek = promptsView.findViewById(R.id.radioGroupDayOfWeek);
+
+        AlertDialog descriptionAlertDialog = createAlertDialog(promptsView);
+        descriptionAlertDialog.getWindow().setBackgroundDrawableResource(
+                R.drawable.oval_button);
+        descriptionAlertDialog.show();
+
+        cancel.setOnClickListener(view -> descriptionAlertDialog.cancel());
+        RadioButton defaultSelectRadioButton =
+                (RadioButton)radioGroupDayOfWeek.getChildAt(AlarmClock.DaysOfWeek.findByAbbr(alarmClockDaysOfWeek).ordinal());
+        defaultSelectRadioButton.setChecked(true);
+        radioGroupDayOfWeek.setOnCheckedChangeListener((radioGroup, i) -> {
+            View radioButton = radioGroup.findViewById(i);
+            int index = radioGroup.indexOfChild(radioButton);
+            changeAlarmClockDaysOfWeek(index,descriptionAlertDialog);
+        });
+    }
+
+    private void changeAlarmClockDaysOfWeek(int daysOfWeek, AlertDialog alertDialog) {
+        alarmClockDaysOfWeek = AlarmClock.DaysOfWeek.values()[daysOfWeek].getCode();
+        alertDialog.cancel();
+        dayOfWeek.setText(alarmClockDaysOfWeek);
+    }
+
     private void changeAlarmClockDescription(EditText description, AlertDialog alertDialog) {
         alarmClockDescription = description.getText().toString();
         alertDialog.cancel();
         alarmClockName.setText(alarmClockDescription);
     }
 
-    private AlertDialog createChangeDescriptionAlertDialog(View promptsView) {
+    private AlertDialog createAlertDialog(View promptsView) {
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this);
         mDialogBuilder.setView(promptsView);
         AlertDialog alertDialog = mDialogBuilder.create();
