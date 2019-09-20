@@ -10,9 +10,30 @@ import android.os.Parcelable;
 import com.sgc.clock.db.AlarmClockDao;
 import com.sgc.clock.db.AlarmClockDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Entity
 public class AlarmClock implements Parcelable {
 
+    public static enum DaysOfWeek {
+        ALLWEEK("Пн-Вс"), NOREPEAT("Без повторов");
+
+        public static DaysOfWeek findByAbbr(String abbr){
+            for(DaysOfWeek v : values()){
+                if(v.code.equals(abbr)){
+                    return v;
+                }
+            }
+            return null;
+        }
+
+        private String code;
+        DaysOfWeek(String code){
+            this.code = code;
+        }
+        public String getCode(){ return code;}
+    }
 
     @PrimaryKey(autoGenerate = true)
     private int _id = 0;
@@ -26,6 +47,7 @@ public class AlarmClock implements Parcelable {
 
     /**
      * copy constructor
+     *
      * @param alarmClock alarm clock which you want to copy
      */
     @Ignore
@@ -149,13 +171,13 @@ public class AlarmClock implements Parcelable {
         return isEquals;
     }
 
-    public int getHours(){
+    public int getHours() {
         String hoursStr = alarmClockTime.split(" : ")[0];
         int hours = Integer.parseInt(hoursStr);
         return hours;
     }
 
-    public int getMinutes(){
+    public int getMinutes() {
         String minutesStr = alarmClockTime.split(" : ")[1];
         int minutes = Integer.parseInt(minutesStr);
         return minutes;
@@ -168,7 +190,7 @@ public class AlarmClock implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeStringArray(new String[] { Integer.toString(_id), alarmClockName, alarmClockTime, alarmClockDaysOfWeek,Boolean.toString(isActive) });
+        parcel.writeStringArray(new String[]{Integer.toString(_id), alarmClockName, alarmClockTime, alarmClockDaysOfWeek, Boolean.toString(isActive)});
     }
 
     public static final Creator<AlarmClock> CREATOR = new Creator<AlarmClock>() {
