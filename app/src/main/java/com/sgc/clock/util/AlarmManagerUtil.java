@@ -52,6 +52,7 @@ public class AlarmManagerUtil {
         startAlarmCalendar.setTimeInMillis(System.currentTimeMillis());
         startAlarmCalendar.set(Calendar.HOUR_OF_DAY, alarm.getHours());
         startAlarmCalendar.set(Calendar.MINUTE, alarm.getMinutes());
+        startAlarmCalendar.set(Calendar.SECOND, 0);
 
         toNextDay(startAlarmCalendar, currentCalendar, alarm);
 
@@ -100,7 +101,7 @@ public class AlarmManagerUtil {
             alarmManager.set(AlarmManager.RTC_WAKEUP, currentDate.getTime(), pendingIntent);
     }
 
-    private static void startRepeatAlarm(AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTime(), 24 * 60 * 60 * 1000, pendingIntent);
+    private static void startRepeatAlarm(AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) { ;
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTime(), AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
     }
 }
