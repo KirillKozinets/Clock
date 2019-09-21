@@ -25,6 +25,7 @@ import com.sgc.clock.db.AlarmClockDataBaseHelper;
 import com.sgc.clock.model.AlarmClock;
 import com.sgc.clock.util.AlarmManagerUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -269,7 +270,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.alarmClockDaysOfWeek)
-    public void setAlarmClockDaysOfWeeke() {
+    public void setAlarmClockDaysOfWeek() {
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView = li.inflate(R.layout.get_days_of_the_week_alert_dialog, null);
 
@@ -283,7 +284,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
 
         cancel.setOnClickListener(view -> descriptionAlertDialog.cancel());
         RadioButton defaultSelectRadioButton =
-                (RadioButton)radioGroupDayOfWeek.getChildAt(AlarmClock.DaysOfWeek.findByAbbr(alarmClockDaysOfWeek).ordinal());
+                (RadioButton)radioGroupDayOfWeek.getChildAt(AlarmClock.DaysOfWeek.indexOf(alarmClockDaysOfWeek));
         defaultSelectRadioButton.setChecked(true);
         radioGroupDayOfWeek.setOnCheckedChangeListener((radioGroup, i) -> {
             View radioButton = radioGroup.findViewById(i);
@@ -293,7 +294,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
     }
 
     private void changeAlarmClockDaysOfWeek(int daysOfWeek, AlertDialog alertDialog) {
-        alarmClockDaysOfWeek = AlarmClock.DaysOfWeek.values()[daysOfWeek].getCode();
+        alarmClockDaysOfWeek = AlarmClock.DaysOfWeek.get(daysOfWeek).getCode();
         alertDialog.cancel();
         dayOfWeek.setText(alarmClockDaysOfWeek);
     }
