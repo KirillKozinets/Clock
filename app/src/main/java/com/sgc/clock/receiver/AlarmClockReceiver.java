@@ -56,11 +56,7 @@ public class AlarmClockReceiver extends BroadcastReceiver {
     private boolean checkTimeChanged(Intent intent) {
         String intentAction = intent.getAction();
 
-        if (Intent.ACTION_TIME_CHANGED.equals(intentAction)
-                || Intent.ACTION_TIMEZONE_CHANGED.equals(intentAction)) {
-            return true;
-        }
-
-        return false;
+        return Intent.ACTION_TIME_CHANGED.equals(intentAction)
+                || Intent.ACTION_TIMEZONE_CHANGED.equals(intentAction);
     }
 }
