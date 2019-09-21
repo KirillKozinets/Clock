@@ -19,10 +19,11 @@ import java.util.ArrayList;
 
 public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAdapter.TimeHolder> {
 
-    ArrayList<AlarmClock> alarmClocks;
-    LayoutInflater inflater;
+    private ArrayList<AlarmClock> alarmClocks;
+    private LayoutInflater inflater;
+    private Context context;
 
-    AlarmClockClickListener alarmClockClickListener;
+    private AlarmClockClickListener alarmClockClickListener;
 
     public interface AlarmClockClickListener {
         void alarmClockItemClick(int alarmClockId);
@@ -36,6 +37,7 @@ public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAd
     public AlarmClockListAdapter(Context context, ArrayList<AlarmClock> alarmClocks, AlarmClockClickListener alarmClockClickListener) {
         this.alarmClocks = alarmClocks;
         this.inflater = LayoutInflater.from(context);
+        this.context = context;
         this.alarmClockClickListener = alarmClockClickListener;
     }
 
@@ -59,7 +61,7 @@ public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAd
             if (alarmClockItem.getActive() != b) {
                 alarmClockItem.setActive(b);
                 AlarmClockDataBaseHelper.getInstance(inflater.getContext()).updateAlarmClockToDataBase(alarmClockItem);
-                AlarmManagerUtil.startAlarm(alarmClockItem, inflater.getContext());
+                AlarmManagerUtil.startAlarm(alarmClockItem,context);
             }
         });
 
@@ -79,7 +81,7 @@ public class AlarmClockListAdapter extends RecyclerView.Adapter<AlarmClockListAd
         TextView dayOfWeek;
         SwitchCompat activeAlarmClock;
 
-        public TimeHolder(@NonNull View itemView) {
+        TimeHolder(@NonNull View itemView) {
             super(itemView);
             timeAlarm = itemView.findViewById(R.id.timeAlarm);
             nameAlarm = itemView.findViewById(R.id.nameAlarm);
