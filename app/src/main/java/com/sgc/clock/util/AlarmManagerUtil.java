@@ -54,7 +54,7 @@ public class AlarmManagerUtil {
         startAlarmCalendar.set(Calendar.MINUTE, alarm.getMinutes());
         startAlarmCalendar.set(Calendar.SECOND, 0);
 
-        toNextDay(startAlarmCalendar, currentCalendar, alarm);
+        toNextDay(startAlarmCalendar, currentCalendar);
 
         return startAlarmCalendar.getTime();
     }
@@ -75,14 +75,9 @@ public class AlarmManagerUtil {
         return startAlarm(alarmClock, context);
     }
 
-    private static void toNextDay(Calendar calendar, Calendar currentCalendar, AlarmClock alarm) {
-        if (currentCalendar.get(Calendar.HOUR_OF_DAY) >= alarm.getHours()) {
-            if (currentCalendar.get(Calendar.HOUR_OF_DAY) == alarm.getHours() && currentCalendar.get(Calendar.MINUTE) > alarm.getMinutes()) {
-                calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1);
-            } else if (currentCalendar.get(Calendar.HOUR_OF_DAY) > alarm.getHours()) {
-                calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1);
-            }
-        }
+    private static void toNextDay(Calendar startAlarmCalendar, Calendar currentCalendar) {
+        if (startAlarmCalendar.getTimeInMillis() < currentCalendar.getTimeInMillis())
+            startAlarmCalendar.set(Calendar.DAY_OF_YEAR, startAlarmCalendar.get(Calendar.DAY_OF_YEAR) + 1);
     }
 
     private static void startAlarm(AlarmClock alarmClock, AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
@@ -101,7 +96,8 @@ public class AlarmManagerUtil {
             alarmManager.set(AlarmManager.RTC_WAKEUP, currentDate.getTime(), pendingIntent);
     }
 
-    private static void startRepeatAlarm(AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) { ;
+    private static void startRepeatAlarm(AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
+        ;
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTime(), AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
     }
 }
