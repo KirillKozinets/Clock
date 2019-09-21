@@ -1,64 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    android:background="@drawable/oval_button"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/oval_button"
+    android:orientation="vertical">
 
     <TextView
-        android:textColor="@color/blue"
+        android:layout_gravity="center"
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:text="Описание"
-        android:textSize="26sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/blue"
+        android:textSize="26sp" />
 
     <EditText
-        android:maxLines="1"
-        android:maxLength="20"
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:gravity="center"
-        android:text="Будильник"
-        android:textColor="@color/blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        android:maxLength="20"
+        android:maxLines="1"
+        android:textColor="@color/blue" />
 
-    <Button
-        android:paddingBottom="5dp"
-        android:id="@+id/OK"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="72dp"
-        android:background="@drawable/oval_button"
-        android:text="OK"
-        android:textColor="@color/blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="88dp"
-        android:background="@drawable/oval_button"
-        android:text="Отмена"
-        android:textColor="@color/blue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/OK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/oval_button"
+            android:text="OK"
+            android:textColor="@color/blue" />
 
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@drawable/oval_button"
+
+            android:text="Отмена"
+            android:textColor="@color/blue" />
+
+    </LinearLayout>
+</LinearLayout>
