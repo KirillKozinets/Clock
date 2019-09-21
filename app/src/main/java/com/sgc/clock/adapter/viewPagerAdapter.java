@@ -9,8 +9,8 @@ import com.sgc.clock.ui.fragment.alarmClockFragment;
 
 public class viewPagerAdapter extends FragmentPagerAdapter {
 
-    private Fragment fragments[] = new Fragment[]{
-        new alarmClockFragment()
+    private Fragment[] fragments = new Fragment[]{
+            new alarmClockFragment()
     };
 
     public viewPagerAdapter(FragmentManager fm) {
