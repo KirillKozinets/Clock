@@ -25,6 +25,7 @@ import com.sgc.clock.util.Constants;
 import com.sgc.clock.util.ParcelableUtil;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
 import static com.sgc.clock.util.Constants.isDebug;
@@ -46,7 +47,7 @@ public class OrderReminderNotificationService extends Service {
         byte[] alarmClockByteArray = intent.getByteArrayExtra(TAG_SEND_ALARM_CLOCK);
         alarmClock = AlarmClockConverter.convertByteArrayToAlarmClock(alarmClockByteArray);
 
-        if (alarmClock.getActive()) {
+        if (alarmClock.getActive() && !isWeekend(alarmClock)) {
             alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
             // not start music player when app work in debug mode
@@ -55,6 +56,15 @@ public class OrderReminderNotificationService extends Service {
 
             sendNotification();
         }
+    }
+
+    private boolean isWeekend(AlarmClock alarmClock) {
+        if(alarmClock.getAlarmClockDaysOfWeek().equals(AlarmClock.DaysOfWeek.NOWEEKEND.getCode())) {
+            Calendar calendar = Calendar.getInstance();
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            return (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY);
+        }
+        return false;
     }
 
     private void startPlayer() {

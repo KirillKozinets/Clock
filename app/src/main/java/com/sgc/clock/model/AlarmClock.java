@@ -10,29 +10,58 @@ import android.os.Parcelable;
 import com.sgc.clock.db.AlarmClockDao;
 import com.sgc.clock.db.AlarmClockDatabase;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
 @Entity
 public class AlarmClock implements Parcelable {
 
-    public static enum DaysOfWeek {
-        ALLWEEK("Пн-Вс"), NOREPEAT("Без повторов");
+    public enum DaysOfWeek {
+        ALLWEEK("Пн-Вс"),NOREPEAT("Без повторов"),NOWEEKEND("Пн - Пт");
 
-        public static DaysOfWeek findByAbbr(String abbr){
-            for(DaysOfWeek v : values()){
-                if(v.code.equals(abbr)){
-                    return v;
-                }
+        private static Map<Integer, DaysOfWeek> daysOfWeek = new HashMap<>();
+
+        private static void init() {
+            if (daysOfWeek.size() == 0) {
+                daysOfWeek.put(0, DaysOfWeek.ALLWEEK);
+                daysOfWeek.put(1, DaysOfWeek.NOREPEAT);
+                daysOfWeek.put(2, DaysOfWeek.NOWEEKEND);
             }
-            return null;
+        }
+
+        public static DaysOfWeek get(int id) {
+                init();
+            return daysOfWeek.get(id);
+        }
+
+        public static ArrayList<DaysOfWeek> get() {
+                init();
+            return new ArrayList<>(daysOfWeek.values());
+        }
+
+        public static int indexOf(String code) {
+                init();
+            ArrayList<DaysOfWeek> days = get();
+            ArrayList<String> codeDays = new ArrayList<>();
+
+            for(int i = 0 ; i < days.size() ; i++)
+                codeDays.add(days.get(i).code);
+
+            return codeDays.indexOf(code);
         }
 
         private String code;
-        DaysOfWeek(String code){
+
+        DaysOfWeek(String code) {
             this.code = code;
         }
-        public String getCode(){ return code;}
+
+        public String getCode() {
+            return code;
+        }
+
     }
 
     @PrimaryKey(autoGenerate = true)
