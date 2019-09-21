@@ -52,7 +52,7 @@ public class TimeSelectAdapter extends RecyclerView.Adapter<TimeSelectAdapter.Ti
 
         TextView textView;
 
-        public TimeHolder(@NonNull View itemView) {
+        TimeHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.textTime);
 
