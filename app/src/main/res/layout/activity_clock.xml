@@ -20,11 +20,15 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TabItem
-                android:id="@+id/Tab1"
+                android:id="@+id/alarm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/alarm_clock" />
-
+            <android.support.design.widget.TabItem
+                android:id="@+id/timer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="таймер" />
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 

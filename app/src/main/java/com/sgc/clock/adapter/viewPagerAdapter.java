@@ -5,12 +5,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.sgc.clock.ui.fragment.alarmClockFragment;
+import com.sgc.clock.ui.fragment.timerFragment;
 
 
 public class viewPagerAdapter extends FragmentPagerAdapter {
 
     private Fragment[] fragments = new Fragment[]{
-            new alarmClockFragment()
+            new alarmClockFragment(),
+            new timerFragment()
     };
 
     public viewPagerAdapter(FragmentManager fm) {

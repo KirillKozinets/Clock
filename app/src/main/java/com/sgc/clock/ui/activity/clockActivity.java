@@ -1,12 +1,11 @@
 package com.sgc.clock.ui.activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
 
 import com.sgc.clock.R;
 import com.sgc.clock.adapter.viewPagerAdapter;
@@ -18,13 +17,14 @@ import com.sgc.clock.util.PowerSaverIntentUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.sgc.clock.util.AlarmClockConverter.convertByteArrayToAlarmClock;
 import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
 
 public class clockActivity extends AppCompatActivity {
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+    @BindView(R.id.tabs)
+    TabLayout tabs;
 
     private viewPagerAdapter pagerAdapter;
 
@@ -39,6 +39,27 @@ public class clockActivity extends AppCompatActivity {
 
         pagerAdapter = new viewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
+        setTableSelector();
+    }
+
+    private void setTableSelector() {
+        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override
@@ -53,15 +74,15 @@ public class clockActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CHANGE_ALARM_CLOCK:
-                     AlarmClockDataBaseHelper.getInstance(getApplicationContext()).updateAlarmClockToDataBase(alarmClock);
-                     alarmClockId = alarmClock.get_id();
+                    AlarmClockDataBaseHelper.getInstance(getApplicationContext()).updateAlarmClockToDataBase(alarmClock);
+                    alarmClockId = alarmClock.get_id();
                     break;
                 case REQUEST_NEW_ALARM_CLOCK:
                     alarmClockId = AlarmClockDataBaseHelper.getInstance(getApplicationContext()).addAlarmClockToDataBase(alarmClock);
                     break;
             }
             AlarmManagerUtil.startAlarm(alarmClockId, getApplicationContext());
-         }
+        }
     }
 
     @Override
