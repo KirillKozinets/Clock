@@ -81,10 +81,7 @@ public class AlarmManagerUtil {
     }
 
     private static void startAlarm(AlarmClock alarmClock, AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
-        if (alarmClock.getAlarmClockDaysOfWeek().equals(AlarmClock.DaysOfWeek.NOREPEAT.getCode())) {
             starSingleAlarm(alarmManager, pendingIntent, currentDate);
-        } else
-            startRepeatAlarm(alarmManager, pendingIntent, currentDate);
     }
 
     private static void starSingleAlarm(AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
@@ -96,8 +93,4 @@ public class AlarmManagerUtil {
             alarmManager.set(AlarmManager.RTC_WAKEUP, currentDate.getTime(), pendingIntent);
     }
 
-    private static void startRepeatAlarm(AlarmManager alarmManager, PendingIntent pendingIntent, Date currentDate) {
-        ;
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTime(), AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
-    }
 }
