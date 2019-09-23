@@ -36,6 +36,8 @@ import butterknife.OnClick;
 import static com.sgc.clock.util.Constants.TAG_ACTIVITY_CREATE_ALARM_CLOCK_TITLE;
 import static com.sgc.clock.util.Constants.TAG_SEND_ALARM_CLOCK;
 import static com.sgc.clock.util.Constants.TAG_SEND_ID_TO_CHANGE_ALARM_CLOCK;
+import static com.sgc.clock.util.RecyclerViewUtil.installationRecyclerView;
+import static com.sgc.clock.util.RecyclerViewUtil.setSelectColor;
 
 public class createNewAlarmClockActivity extends AppCompatActivity {
 
@@ -96,28 +98,6 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         installationRecyclerView(
                 minutes, minutesSnapHelper, minutesLayoutManager,
                 adapterMinutes, recyclerViewScrollListenerMinutes, minutesPosition);
-    }
-
-    private void installationRecyclerView(RecyclerView recyclerView, LinearSnapHelper snapHelper,
-                                          RecyclerView.LayoutManager layoutManager, TimeSelectAdapter adapter,
-                                          RecyclerView.OnScrollListener scrollListener, int position) {
-
-        snapHelper.attachToRecyclerView(recyclerView);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(scrollListener);
-        recyclerView.scrollToPosition(position);
-        recyclerView.post(() -> toTargetPosition(layoutManager, snapHelper, recyclerView, position));
-    }
-
-    private void toTargetPosition(RecyclerView.LayoutManager LayoutManager, LinearSnapHelper snap, RecyclerView recyclerView, int position) {
-        View view = LayoutManager.findViewByPosition(position);
-        if (view != null) {
-            int[] snapDistance = snap.calculateDistanceToFinalSnap(LayoutManager, view);
-            if (snapDistance[0] != 0 || snapDistance[1] != 0) {
-                recyclerView.scrollBy(snapDistance[0], snapDistance[1]);
-            }
-        }
     }
 
     private void loadAlarmClockFromIntent() {
@@ -199,7 +179,7 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            hoursLastTextView = setSelectColor(hoursLastTextView, hoursSnapHelper, hoursLayoutManager);
+            hoursLastTextView = setSelectColor(hoursLastTextView, hoursSnapHelper, hoursLayoutManager,getApplicationContext());
         }
     };
 
@@ -207,20 +187,9 @@ public class createNewAlarmClockActivity extends AppCompatActivity {
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            minutesLastTextView = setSelectColor(minutesLastTextView, minutesSnapHelper, minutesLayoutManager);
+            minutesLastTextView = setSelectColor(minutesLastTextView, minutesSnapHelper, minutesLayoutManager,getApplicationContext());
         }
     };
-
-    @SuppressLint("ResourceType")
-    private TextView setSelectColor(TextView lastText, LinearSnapHelper snapHelper, RecyclerView.LayoutManager manager) {
-        TextView centerView = (TextView) snapHelper.findSnapView(manager);
-        if (lastText != null)
-            lastText.setTextColor(Color.BLACK);
-        int blueColor = Color.parseColor(getResources().getString(R.color.blue));
-        (centerView).setTextColor(blueColor);
-        (centerView).setTextColor(Color.parseColor("#2853e0"));
-        return centerView;
-    }
 
     @SuppressLint("DefaultLocale")
     @OnClick(R.id.addAlarmClock)
