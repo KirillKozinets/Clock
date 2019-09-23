@@ -21,11 +21,22 @@ public class TimeSelectAdapter extends RecyclerView.Adapter<TimeSelectAdapter.Ti
     private int step;
     private LayoutInflater inflater;
 
-    public TimeSelectAdapter(Context context, int max, int step,int symbolLength) {
+    private int textSize = 26;
+    private int textColor = Color.BLACK;
+
+    public TimeSelectAdapter(Context context, int max, int step, int symbolLength) {
         this.max = max;
         this.step = step;
         this.symbolLength = symbolLength;
         this.inflater = LayoutInflater.from(context);
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
     }
 
     @Override
@@ -39,8 +50,9 @@ public class TimeSelectAdapter extends RecyclerView.Adapter<TimeSelectAdapter.Ti
     @Override
     public void onBindViewHolder(final TimeHolder holder, final int position) {
         int positionInList = position % max;
-        holder.textView.setText(String.format(Locale.US,"%0" + symbolLength + "d",positionInList * step));
-        holder.textView.setTextColor(Color.BLACK);
+        holder.textView.setText(String.format(Locale.US, "%0" + symbolLength + "d", positionInList * step));
+        holder.textView.setTextColor(textColor);
+        holder.textView.setTextSize(textSize);
     }
 
     @Override
