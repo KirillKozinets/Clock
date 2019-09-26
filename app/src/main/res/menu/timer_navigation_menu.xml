@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/add_alarm_clock"
+        android:icon="@drawable/stop_no_active"
+        android:title="" />
+    <item
+        android:id="@+id/add_alarm_clock2"
+        android:icon="@drawable/start_no_active"
+        android:title="" />
+    <item
+        android:id="@+id/add_alarm_clock3"
+        android:icon="@drawable/options"
+        android:title="" />
+</menu>
