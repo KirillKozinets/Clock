@@ -82,4 +82,19 @@
             app:layout_constraintTop_toBottomOf="@+id/hours" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        style="@style/BottomNavigationView"
+        android:paddingTop="10dp"
+        android:id="@+id/bottom_navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/oval_button"
+        app:itemTextColor="@color/blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/timer_navigation_menu"
+        android:layout_marginBottom="7dp"/>
+
 </android.support.constraint.ConstraintLayout>
