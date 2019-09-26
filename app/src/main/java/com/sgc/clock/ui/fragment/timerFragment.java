@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
@@ -31,6 +32,8 @@ public class timerFragment extends Fragment {
     @BindView(R.id.hours)
     RecyclerView hours;
     Unbinder unbinder;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomNavigation;
 
     private TextView hoursLastTextView;
     private TextView minutesLastTextView;
@@ -82,6 +85,8 @@ public class timerFragment extends Fragment {
                 seconds, secundsSnapHelper, secundsLayoutManager,
                 adapterSeconds, recyclerViewScrollListenerSeconds, 240);
 
+        bottomNavigation.setItemIconTintList(null);
+
         return view;
     }
 
@@ -89,8 +94,8 @@ public class timerFragment extends Fragment {
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-             hoursLastTextView = setSelectColor(hoursLastTextView, hoursSnapHelper,
-                     hoursLayoutManager,getActivity().getApplicationContext());
+            hoursLastTextView = setSelectColor(hoursLastTextView, hoursSnapHelper,
+                    hoursLayoutManager, getActivity().getApplicationContext());
         }
     };
 
@@ -99,7 +104,7 @@ public class timerFragment extends Fragment {
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
             minutesLastTextView = setSelectColor(minutesLastTextView, minutesSnapHelper,
-                    minutesLayoutManager,getActivity().getApplicationContext());
+                    minutesLayoutManager, getActivity().getApplicationContext());
         }
     };
 
@@ -108,7 +113,7 @@ public class timerFragment extends Fragment {
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
             secundsLastTextView = setSelectColor(secundsLastTextView, secundsSnapHelper,
-                    secundsLayoutManager,getActivity().getApplicationContext());
+                    secundsLayoutManager, getActivity().getApplicationContext());
         }
     };
 
