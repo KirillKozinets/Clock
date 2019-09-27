@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -23,8 +24,9 @@ import butterknife.Unbinder;
 
 import static com.sgc.clock.util.RecyclerViewUtil.installationRecyclerView;
 import static com.sgc.clock.util.RecyclerViewUtil.setSelectColor;
+import static com.sgc.clock.util.RecyclerViewUtil.toTargetPosition;
 
-public class timerFragment extends Fragment {
+public class timerFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
     @BindView(R.id.seconds)
     RecyclerView seconds;
     @BindView(R.id.minutes)
@@ -47,15 +49,24 @@ public class timerFragment extends Fragment {
     private RecyclerView.LayoutManager minutesLayoutManager;
     private RecyclerView.LayoutManager secundsLayoutManager;
 
-    public static timerFragment newInstance() {
-        return new timerFragment();
-    }
+    private int startHoursPosition = 200;
+    private int startMinutesPosition = 240;
+    private int startSecondsPosition = 240;
+
+    private int saveHoursPosition = 200;
+    private int savMinutesPosition = 240;
+    private int savSecondsPosition = 240;
+
+
+    private boolean activeInstrumentsMenu = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.timer_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
+        bottomNavigation.setItemIconTintList(null);
+        bottomNavigation.setOnNavigationItemSelectedListener(this);
 
         hoursLayoutManager = new LinearLayoutManager(getContext());
         minutesLayoutManager = new LinearLayoutManager(getContext());
@@ -73,19 +84,21 @@ public class timerFragment extends Fragment {
         adapterMinutes.setTextSize(40);
         adapterSeconds.setTextSize(40);
 
+        loadInstanceState(savedInstanceState);
+
         installationRecyclerView(
                 hours, hoursSnapHelper, hoursLayoutManager,
-                adapterHours, recyclerViewScrollListenerHours, 200);
+                adapterHours, recyclerViewScrollListenerHours, saveHoursPosition);
 
         installationRecyclerView(
                 minutes, minutesSnapHelper, minutesLayoutManager,
-                adapterMinutes, recyclerViewScrollListenerMinutes, 240);
+                adapterMinutes, recyclerViewScrollListenerMinutes, savMinutesPosition);
 
         installationRecyclerView(
                 seconds, secundsSnapHelper, secundsLayoutManager,
-                adapterSeconds, recyclerViewScrollListenerSeconds, 240);
+                adapterSeconds, recyclerViewScrollListenerSeconds, savSecondsPosition);
 
-        bottomNavigation.setItemIconTintList(null);
+        checkZeroTime();
 
         return view;
     }
@@ -96,6 +109,7 @@ public class timerFragment extends Fragment {
             super.onScrolled(recyclerView, dx, dy);
             hoursLastTextView = setSelectColor(hoursLastTextView, hoursSnapHelper,
                     hoursLayoutManager, getActivity().getApplicationContext());
+            checkZeroTime();
         }
     };
 
@@ -105,6 +119,7 @@ public class timerFragment extends Fragment {
             super.onScrolled(recyclerView, dx, dy);
             minutesLastTextView = setSelectColor(minutesLastTextView, minutesSnapHelper,
                     minutesLayoutManager, getActivity().getApplicationContext());
+            checkZeroTime();
         }
     };
 
@@ -114,12 +129,73 @@ public class timerFragment extends Fragment {
             super.onScrolled(recyclerView, dx, dy);
             secundsLastTextView = setSelectColor(secundsLastTextView, secundsSnapHelper,
                     secundsLayoutManager, getActivity().getApplicationContext());
+            checkZeroTime();
         }
     };
+
+    private void checkZeroTime() {
+        if (hoursLastTextView != null && minutesLastTextView != null && secundsLastTextView != null) {
+            boolean isNeedChangeMenu = false;
+
+            if (hoursLastTextView.getText().equals("00") &&
+                    minutesLastTextView.getText().equals("00") &&
+                    secundsLastTextView.getText().equals("00")) {
+                if (activeInstrumentsMenu) {
+                    activeInstrumentsMenu = false;
+                    isNeedChangeMenu = true;
+                }
+            } else if (!activeInstrumentsMenu) {
+                activeInstrumentsMenu = true;
+                isNeedChangeMenu = true;
+            }
+
+            if (isNeedChangeMenu)
+                setActiveInstrumentsMenu(activeInstrumentsMenu);
+        }
+    }
+
+    private void setActiveInstrumentsMenu(boolean active) {
+        bottomNavigation.getMenu().setGroupVisible(R.id.active_group, active);
+        bottomNavigation.getMenu().setGroupVisible(R.id.no_active_group, !active);
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.stop:
+                toTargetPosition(secundsLayoutManager,secundsSnapHelper,seconds, startSecondsPosition);
+                toTargetPosition(minutesLayoutManager,minutesSnapHelper,minutes, startMinutesPosition);
+                toTargetPosition(hoursLayoutManager,hoursSnapHelper,hours, startHoursPosition);
+                break;
+            case R.id.start:
+
+                break;
+        }
+        return true;
+    }
+
+    private void loadInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            saveHoursPosition = savedInstanceState.getInt("hours");
+            savMinutesPosition = savedInstanceState.getInt("minutes");
+            savSecondsPosition = savedInstanceState.getInt("seconds");
+            activeInstrumentsMenu = savedInstanceState.getBoolean("activeInstrumentsMenu");
+            setActiveInstrumentsMenu(activeInstrumentsMenu);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("seconds", secundsLayoutManager.getPosition(secundsLastTextView));
+        outState.putInt("hours", hoursLayoutManager.getPosition(hoursLastTextView));
+        outState.putInt("minutes", minutesLayoutManager.getPosition(minutesLastTextView));
+        outState.putBoolean("activeInstrumentsMenu", activeInstrumentsMenu);
+        super.onSaveInstanceState(outState);
     }
 }
