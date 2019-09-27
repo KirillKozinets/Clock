@@ -14,8 +14,8 @@ import com.sgc.clock.adapter.TimeSelectAdapter;
 public class RecyclerViewUtil {
 
     public static void installationRecyclerView(RecyclerView recyclerView, LinearSnapHelper snapHelper,
-                                          RecyclerView.LayoutManager layoutManager, TimeSelectAdapter adapter,
-                                          RecyclerView.OnScrollListener scrollListener, int position) {
+                                                RecyclerView.LayoutManager layoutManager, TimeSelectAdapter adapter,
+                                                RecyclerView.OnScrollListener scrollListener, int position) {
 
         snapHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(layoutManager);
@@ -25,10 +25,17 @@ public class RecyclerViewUtil {
         recyclerView.post(() -> toTargetPosition(layoutManager, snapHelper, recyclerView, position));
     }
 
-    private static void toTargetPosition(RecyclerView.LayoutManager LayoutManager, LinearSnapHelper snap, RecyclerView recyclerView, int position) {
-        View view = LayoutManager.findViewByPosition(position);
+    public static void toTargetPosition(RecyclerView.LayoutManager layoutManager, LinearSnapHelper snap, RecyclerView recyclerView, int position) {
+        recyclerView.scrollToPosition(position);
+        recyclerView.post(() -> {
+            scrollToPOsition(layoutManager,snap,recyclerView,position);
+        });
+    }
+
+    private static void scrollToPOsition(RecyclerView.LayoutManager layoutManager, LinearSnapHelper snap, RecyclerView recyclerView, int position){
+        RecyclerView.ViewHolder view = recyclerView.findViewHolderForAdapterPosition(position);
         if (view != null) {
-            int[] snapDistance = snap.calculateDistanceToFinalSnap(LayoutManager, view);
+            int[] snapDistance = snap.calculateDistanceToFinalSnap(layoutManager, view.itemView);
             if (snapDistance[0] != 0 || snapDistance[1] != 0) {
                 recyclerView.scrollBy(snapDistance[0], snapDistance[1]);
             }
