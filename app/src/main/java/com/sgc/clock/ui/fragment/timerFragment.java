@@ -39,15 +39,15 @@ public class timerFragment extends Fragment implements BottomNavigationView.OnNa
 
     private TextView hoursLastTextView;
     private TextView minutesLastTextView;
-    private TextView secundsLastTextView;
+    private TextView secondsLastTextView;
 
     private LinearSnapHelper hoursSnapHelper = new LinearSnapHelper();
     private LinearSnapHelper minutesSnapHelper = new LinearSnapHelper();
-    private LinearSnapHelper secundsSnapHelper = new LinearSnapHelper();
+    private LinearSnapHelper secondsSnapHelper = new LinearSnapHelper();
 
     private RecyclerView.LayoutManager hoursLayoutManager;
     private RecyclerView.LayoutManager minutesLayoutManager;
-    private RecyclerView.LayoutManager secundsLayoutManager;
+    private RecyclerView.LayoutManager secondsLayoutManager;
 
     private int startHoursPosition = 200;
     private int startMinutesPosition = 240;
@@ -70,7 +70,7 @@ public class timerFragment extends Fragment implements BottomNavigationView.OnNa
 
         hoursLayoutManager = new LinearLayoutManager(getContext());
         minutesLayoutManager = new LinearLayoutManager(getContext());
-        secundsLayoutManager = new LinearLayoutManager(getContext());
+        secondsLayoutManager = new LinearLayoutManager(getContext());
 
         TimeSelectAdapter adapterHours = new TimeSelectAdapter(getContext(), 100, 1, 2);
         TimeSelectAdapter adapterMinutes = new TimeSelectAdapter(getContext(), 60, 1, 2);
@@ -95,7 +95,7 @@ public class timerFragment extends Fragment implements BottomNavigationView.OnNa
                 adapterMinutes, recyclerViewScrollListenerMinutes, savMinutesPosition);
 
         installationRecyclerView(
-                seconds, secundsSnapHelper, secundsLayoutManager,
+                seconds, secondsSnapHelper, secondsLayoutManager,
                 adapterSeconds, recyclerViewScrollListenerSeconds, savSecondsPosition);
 
         checkZeroTime();
@@ -127,19 +127,19 @@ public class timerFragment extends Fragment implements BottomNavigationView.OnNa
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            secundsLastTextView = setSelectColor(secundsLastTextView, secundsSnapHelper,
-                    secundsLayoutManager, getActivity().getApplicationContext());
+            secondsLastTextView = setSelectColor(secondsLastTextView, secondsSnapHelper,
+                    secondsLayoutManager, getActivity().getApplicationContext());
             checkZeroTime();
         }
     };
 
     private void checkZeroTime() {
-        if (hoursLastTextView != null && minutesLastTextView != null && secundsLastTextView != null) {
+        if (hoursLastTextView != null && minutesLastTextView != null && secondsLastTextView != null) {
             boolean isNeedChangeMenu = false;
 
             if (hoursLastTextView.getText().equals("00") &&
                     minutesLastTextView.getText().equals("00") &&
-                    secundsLastTextView.getText().equals("00")) {
+                    secondsLastTextView.getText().equals("00")) {
                 if (activeInstrumentsMenu) {
                     activeInstrumentsMenu = false;
                     isNeedChangeMenu = true;
@@ -169,7 +169,7 @@ public class timerFragment extends Fragment implements BottomNavigationView.OnNa
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.stop:
-                toTargetPosition(secundsLayoutManager,secundsSnapHelper,seconds, startSecondsPosition);
+                toTargetPosition(secondsLayoutManager, secondsSnapHelper,seconds, startSecondsPosition);
                 toTargetPosition(minutesLayoutManager,minutesSnapHelper,minutes, startMinutesPosition);
                 toTargetPosition(hoursLayoutManager,hoursSnapHelper,hours, startHoursPosition);
                 break;
@@ -192,7 +192,7 @@ public class timerFragment extends Fragment implements BottomNavigationView.OnNa
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt("seconds", secundsLayoutManager.getPosition(secundsLastTextView));
+        outState.putInt("seconds", secondsLayoutManager.getPosition(secondsLastTextView));
         outState.putInt("hours", hoursLayoutManager.getPosition(hoursLastTextView));
         outState.putInt("minutes", minutesLayoutManager.getPosition(minutesLastTextView));
         outState.putBoolean("activeInstrumentsMenu", activeInstrumentsMenu);
