@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/no_active_group"
+        android:checkableBehavior="single"
+        android:visible="true">
+        <item
+            android:id="@+id/stop"
+            android:clickable="false"
+            android:icon="@drawable/stop_no_active"
+            android:title="" />
+        <item
+            android:id="@+id/start"
+            android:clickable="false"
+            android:icon="@drawable/start_no_active"
+            android:title="" />
+    </group>
+
+    <group
+        android:id="@+id/active_group"
+        android:checkableBehavior="single"
+        android:visible="false">
+        <item
+            android:id="@id/stop"
+            android:icon="@drawable/stop"
+            android:title="" />
+        <item
+            android:id="@id/start"
+            android:icon="@drawable/start"
+            android:title="" />
+    </group>
+
     <item
-        android:id="@+id/add_alarm_clock"
-        android:icon="@drawable/stop"
-        android:title="" />
-    <item
-        android:id="@+id/add_alarm_clock2"
-        android:icon="@drawable/start"
-        android:title="" />
-    <item
-        android:id="@+id/add_alarm_clock3"
         android:icon="@drawable/options"
         android:title="" />
 </menu>
