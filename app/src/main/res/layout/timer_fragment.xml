@@ -84,10 +84,10 @@
 
     <android.support.design.widget.BottomNavigationView
         style="@style/BottomNavigationView"
-        android:paddingTop="10dp"
+        android:paddingTop="5dp"
         android:id="@+id/bottom_navigation"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:background="@drawable/oval_button"
         app:itemTextColor="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
