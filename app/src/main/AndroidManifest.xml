@@ -29,7 +29,9 @@
         </activity>
 
         <receiver android:enabled="true"
-            android:exported="true" android:name=".receiver.AlarmClockReceiver">
+            android:exported="true"
+            android:process=":alarmProcess"
+            android:name=".receiver.AlarmClockReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
